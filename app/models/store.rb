@@ -1,3 +1,4 @@
 class Store < ApplicationRecord
-  validates :name, presence: true, length: {minimun: 3}
+  belongs_to :user
+  validates :name, presence: true, length: {minimum: 3}
 end
