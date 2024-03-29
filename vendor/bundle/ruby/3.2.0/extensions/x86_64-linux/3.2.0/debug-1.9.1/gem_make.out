@@ -1,0 +1,20 @@
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/debug-1.9.1/ext/debug
+/home/samuel/.rbenv/versions/3.2.2/bin/ruby extconf.rb
+/home/samuel/.rbenv/versions/3.2.2/bin/ruby: warning: Ruby was built without YJIT support. You may need to install rustc to build Ruby with YJIT.
+creating Makefile
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/debug-1.9.1/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-ty9nd5 sitelibdir\=./.gem.20240329-2131935-ty9nd5 clean
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/debug-1.9.1/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-ty9nd5 sitelibdir\=./.gem.20240329-2131935-ty9nd5
+compiling debug.c
+compiling iseq_collector.c
+linking shared-object debug/debug.so
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/debug-1.9.1/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-ty9nd5 sitelibdir\=./.gem.20240329-2131935-ty9nd5 install
+/usr/bin/install -c -m 0755 debug.so ./.gem.20240329-2131935-ty9nd5/debug
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/debug-1.9.1/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-ty9nd5 sitelibdir\=./.gem.20240329-2131935-ty9nd5 clean

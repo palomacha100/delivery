@@ -1,0 +1,32 @@
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/puma-6.4.2/ext/puma_http11
+/home/samuel/.rbenv/versions/3.2.2/bin/ruby extconf.rb
+/home/samuel/.rbenv/versions/3.2.2/bin/ruby: warning: Ruby was built without YJIT support. You may need to install rustc to build Ruby with YJIT.
+using OpenSSL pkgconfig (openssl.pc)
+checking for openssl/bio.h... yes
+checking for DTLS_method() in openssl/ssl.h... yes
+checking for SSL_CTX_set_session_cache_mode(NULL, 0) in openssl/ssl.h... yes
+checking for TLS_server_method() in openssl/ssl.h... yes
+checking for SSL_CTX_set_min_proto_version(NULL, 0) in openssl/ssl.h... yes
+checking for X509_STORE_up_ref()... yes
+checking for SSL_CTX_set_ecdh_auto(NULL, 0) in openssl/ssl.h... yes
+checking for SSL_CTX_set_dh_auto(NULL, 0) in openssl/ssl.h... yes
+checking for SSL_get1_peer_certificate() in openssl/ssl.h... yes
+checking for Random.bytes... yes
+creating Makefile
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/puma-6.4.2/ext/puma_http11
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-o5rxmy sitelibdir\=./.gem.20240329-2131935-o5rxmy clean
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/puma-6.4.2/ext/puma_http11
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-o5rxmy sitelibdir\=./.gem.20240329-2131935-o5rxmy
+compiling http11_parser.c
+compiling mini_ssl.c
+compiling puma_http11.c
+linking shared-object puma/puma_http11.so
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/puma-6.4.2/ext/puma_http11
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-o5rxmy sitelibdir\=./.gem.20240329-2131935-o5rxmy install
+/usr/bin/install -c -m 0755 puma_http11.so ./.gem.20240329-2131935-o5rxmy/puma
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/puma-6.4.2/ext/puma_http11
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-o5rxmy sitelibdir\=./.gem.20240329-2131935-o5rxmy clean
