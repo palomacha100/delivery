@@ -1,0 +1,27 @@
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+/home/samuel/.rbenv/versions/3.2.2/bin/ruby extconf.rb
+/home/samuel/.rbenv/versions/3.2.2/bin/ruby: warning: Ruby was built without YJIT support. You may need to install rustc to build Ruby with YJIT.
+creating Makefile
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-rt7d3u sitelibdir\=./.gem.20240329-2131935-rt7d3u clean
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-rt7d3u sitelibdir\=./.gem.20240329-2131935-rt7d3u
+compiling websocket_mask.c
+websocket_mask.c: In function ‘Init_websocket_mask’:
+websocket_mask.c:26:6: warning: old-style function definition [-Wold-style-definition]
+   26 | void Init_websocket_mask()
+      |      ^~~~~~~~~~~~~~~~~~~
+websocket_mask.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
+linking shared-object websocket_mask.so
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-rt7d3u sitelibdir\=./.gem.20240329-2131935-rt7d3u install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20240329-2131935-rt7d3u
+
+current directory: /home/samuel/palomaDelivery/delivery/vendor/bundle/ruby/3.2.0/gems/websocket-driver-0.7.6/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20240329-2131935-rt7d3u sitelibdir\=./.gem.20240329-2131935-rt7d3u clean

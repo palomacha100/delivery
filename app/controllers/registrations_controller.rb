@@ -5,7 +5,7 @@ class RegistrationsController < ApplicationController
 
 
     def me
-        render json: {email: current_user.email, id: current_user.id}
+        render json: {id: @user.id, email: current_user.email}
     end
 
     def sign_in
