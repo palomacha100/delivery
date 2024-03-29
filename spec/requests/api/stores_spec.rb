@@ -6,17 +6,20 @@ RSpec.describe "stories", type: :request do
     user.save
     user
   }
+
+  before {
+    sign_in(user)
+  }
+  
   describe "GET /show" do
     it "renders a successful response with stores data" do
       store = Store.create!(
         name: "New Store",
         user: user
         )
-        puts "Store created: #{store.inspect}"
       get "/stores/#{store.id}", headers: {"Accept" => "application/json" }
       
       json = JSON.parse(response.body)
-      puts "JSON response: #{json.inspect}"
 
       expect(json["name"]).to eq "New Store"
     end
