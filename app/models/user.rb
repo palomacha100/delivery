@@ -1,6 +1,8 @@
 require 'dotenv/load'
 
 class User < ApplicationRecord
+
+  validates :role, presence: true
   # Include default devise modules. Others available are:
   # :confirm
   # able, :lockable, :timeoutable, :trackable and :omniauthable

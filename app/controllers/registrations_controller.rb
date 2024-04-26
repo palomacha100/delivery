@@ -19,12 +19,15 @@ class RegistrationsController < ApplicationController
  
    def create
      @user = User.new(user_params)
+     @user.role = current_credential.access
      email = params[:user][:email]
      if user_exists?(email)
          render json: { error: 'User already exists' }, status: :unprocessable_entity
      else 
         if @user.save
           render json: { email: @user.email }
+        else
+          render json: {}, status: :unprocessable_entity
         end
      end
    end
@@ -35,7 +38,7 @@ class RegistrationsController < ApplicationController
    def user_params
      params
       .required(:user)
-      .permit(:email, :password, :password_confirmation, :role)
+      .permit(:email, :password, :password_confirmation)
    end
  
    def user_exists?(email)
