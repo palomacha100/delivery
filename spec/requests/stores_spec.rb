@@ -18,11 +18,7 @@ RSpec.describe "/stores", type: :request do
   # Store. As you add validations to Store, be sure to
   # adjust the attributes here as well.
   let(:user) {
-    user = User.new(
-      email: "user@example.com", password: "123456", password_confirmation: "123456"
-      )
-      user.save!
-      user
+    create(:user)
   }
   
   let(:valid_attributes) {

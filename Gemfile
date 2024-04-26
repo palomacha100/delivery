@@ -50,6 +50,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "shoulda-matchers"
   gem "faker"
+  gem 'factory_bot_rails', '~> 6.0'
 end
 
 group :development do
@@ -72,4 +73,5 @@ gem "jwt", "~> 2.8"
 gem "rack-cors", "~> 2.0"
 
 gem 'dotenv'
+
 
