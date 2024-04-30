@@ -3,9 +3,7 @@ require 'dotenv/load'
 class User < ApplicationRecord
 
   validates :role, presence: true
-  # Include default devise modules. Others available are:
-  # :confirm
-  # able, :lockable, :timeoutable, :trackable and :omniauthable
+  
   class InvalidToken < StandardError; end
 
   enum :role, [:admin, :seller, :buyer]
@@ -16,7 +14,7 @@ class User < ApplicationRecord
 
 
   def self.token_for(user)
-    jwt_secret_key = Rails.application.credentials.jwt_secret_key_base
+    jwt_secret_key = Rails.application.credentials.jwt_secret_key
    
 
     jwt_headers = {exp: 1.hour.from_now.to_i}
@@ -31,6 +29,17 @@ class User < ApplicationRecord
        "HS256"
     )
   end
+
+  def self.from_token(token)
+    jwt_secret_key = Rails.application.credentials.jwt_secret_key
+    jwt_decode = (JWT.decode token, jwt_secret_key, true, { algorithm: 'HS256'})
+      .first
+      .with_indifferent_access
+    jwt_decode
+  rescue JWT::ExpiredSignature
+    raise InvalidToken.new
+  end
+  
 end
 
 
