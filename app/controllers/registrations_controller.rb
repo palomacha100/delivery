@@ -22,7 +22,7 @@ class RegistrationsController < ApplicationController
      @user.role = current_credential.access
      email = params[:user][:email]
      if user_exists?(email)
-         render json: { error: 'User already exists' }, status: :unprocessable_entity
+         render json: { error: 'User already exists' }, status: :conflict
      else 
         if @user.save
           render json: { email: @user.email }
