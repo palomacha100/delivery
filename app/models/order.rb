@@ -6,6 +6,10 @@ class Order < ApplicationRecord
 
     validate :buyer_role
 
+    state_machine initial: :created do
+        event :accept do
+            transition created: :accepted  
+
     private
 
      def buyer_role
