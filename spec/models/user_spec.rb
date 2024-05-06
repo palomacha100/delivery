@@ -17,7 +17,12 @@ RSpec.describe User, type: :model do
       user = User.create(email: "macarrao@hotmail.com", password: '123456', password_confirmation: '123457', role: :admin)
       expect(user).not_to be_valid
       expect(user.errors[:password_confirmation]).to include "doesn't match Password" 
-  end
+    end
+    it "checks if email is valid" do
+      user = User.create(email: "@hotmail.com", password: '123456', password_confirmation: '123457', role: :admin)
+      expect(user).not_to be_valid
+      expect(user.errors[:email]).to include "is invalid" 
+   end
     
   end
 end
