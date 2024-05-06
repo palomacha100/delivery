@@ -8,6 +8,11 @@ RSpec.describe User, type: :model do
       expect(user.email).to eq "macarrao@hotmail.com"
       expect(user.role).to eq "admin"
     end
+    it "check if the user is invalid when the role atributte is missing" do
+      user = User.create(email: "macarrao@hotmail.com", password: '123456', password_confirmation: '123456')
+      expect(user).not_to be_valid
+      expect(user.errors[:role]).to include "can't be blank" 
+    end
     
   end
 end
