@@ -23,6 +23,11 @@ RSpec.describe User, type: :model do
       expect(user).not_to be_valid
       expect(user.errors[:email]).to include "is invalid" 
    end
+   it "checks if role is valid" do
+    expect {
+      User.create(email: "example@hotmail.com", password: '123456', password_confirmation: '123457', role: :elefante)
+    }.to raise_error(ArgumentError, "'elefante' is not a valid role")
+  end
     
   end
 end
