@@ -1,4 +1,5 @@
 class StoresController < ApplicationController
+  skip_forgery_protection only: %i[create update]
   before_action :authenticate!
   before_action :set_store, only: %i[ show edit update destroy ]
 
@@ -18,7 +19,9 @@ class StoresController < ApplicationController
   # GET /stores/new
   def new
     @store = Store.new
-   
+    if current_user.admin? 
+      @sellers = User.where(role: :seller)
+    end
   end
 
   # GET /stores/1/edit

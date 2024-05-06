@@ -1,4 +1,5 @@
 <%= form_with(model: store) do |form| %>
+
   <% if store.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(store.errors.count, "error") %> prohibited this store from being saved:</h2>
@@ -16,7 +17,17 @@
     <%= form.text_field :name %>
   </div>
 
+  <% if current_user.admin? %>
+  <div>
+    <%= form.label :seller, style: "display: block" %>
+    <%= form.collection_select :user_id, @sellers, :id, :email,
+    prompt: "Sellers..." %>
+  </div>
+  <% end %>
+
   <div>
     <%= form.submit %>
   </div>
+
+
 <% end %>
