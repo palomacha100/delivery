@@ -16,5 +16,12 @@ RSpec.describe Order, type: :model do
       order = Order.create(buyer: user, store: store)
       expect(order.errors[:buyer]). to include "should be a `user.buyer`"
     end
+
+    it "transitions from 'created' to 'accepted'" do
+      order = Order.create(buyer: user_buyer, store: store)
+      expect(order.state). to eq "created"
+      order.accept!
+      expect(order.state). to eq "accepted"
+    end
   end
 end
