@@ -4,10 +4,14 @@
     "title": "API V1",
     "version": "v1"
   },
+  "schemes": [
+    "http",
+    "https"
+  ],
   "paths": {
     "/stores": {
       "get": {
-        "summary": "Lista de lojas",
+        "summary": "List stores",
         "tags": [
           "Stores"
         ],
@@ -18,7 +22,115 @@
         ],
         "responses": {
           "200": {
-            "description": "retorna uma lista de lojas",
+            "description": "Returns a list of stores according to the user's role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "datetime"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "datetime"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "created_at": "2024-04-28T12:00:00Z",
+                    "updated_at": "2024-04-28T12:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new store",
+        "tags": [
+          "Stores"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "User authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "user_id"
+                    ],
+                    "example": {
+                      "name": "Burguer King",
+                      "user_id": 1
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "example": {
+                      "name": "McDonald's"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Store created with succesfull",
             "content": {
               "application/json": {
                 "schema": {
@@ -38,13 +150,7 @@
                       "type": "string",
                       "format": "datetime"
                     }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "created_at",
-                    "updated_at"
-                  ]
+                  }
                 },
                 "example": {
                   "id": 1,
@@ -56,14 +162,462 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{id}": {
+      "put": {
+        "summary": "Store update",
+        "tags": [
+          "Stores"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID Store",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "User authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "user_id"
+                    ],
+                    "example": {
+                      "name": "Burguer King",
+                      "user_id": 1
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "example": {
+                      "name": "McDonald's"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "datetime"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "datetime"
+                    }
+                  }
+                },
+                "example": {
+                  "id": 1,
+                  "name": "Store 1",
+                  "created_at": "2024-04-28T12:00:00Z",
+                  "updated_at": "2024-04-28T12:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {}
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Store",
+        "tags": [
+          "Stores"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID Store",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "User authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/buyers/orders": {
+      "get": {
+        "summary": "A buyer's order list",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "Chave de autenticação da API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "User authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "datetime"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": 1,
+                      "state": "created",
+                      "created_at": "2024-04-28T12:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "create a buyer's order",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "Chave de autenticação da API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "User authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "order": {
+                    "type": "object",
+                    "properties": {
+                      "store_id": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "order": {
+                  "store_id": 1
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "order": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "buyer_id": {
+                          "type": "integer"
+                        },
+                        "store_id": {
+                          "type": "integer"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "datetime"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "datetime"
+                        },
+                        "state": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "order": {
+                    "id": 5,
+                    "buyer_id": 6,
+                    "store_id": 2,
+                    "created_at": "2024-05-05T11:53:09.709Z",
+                    "updated_at": "2024-05-05T11:53:09.709Z",
+                    "state": "created"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
+                }
+              }
+            }
+          },
+          "422":{
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties":{
+                    "errors": {
+                      "type":"string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/new": {
       "post": {
-        "summary": "Registra um usuário",
+        "summary": "Register a user",
         "tags": [
           "Users"
         ],
@@ -94,10 +648,22 @@
                     ]
                   }
                 }
+              },
+              "example": {
+                "user": {
+                  "email": "user2@hotmail.com",
+                  "password": "123456",
+                  "password_confirmation": "123456"
+                }
               }
             }
           }
         },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "X-API-KEY",
@@ -123,7 +689,7 @@
                   }
                 },
                 "example": {
-                  "email": "samuel@hotmail.com"
+                  "email": "user2@hotmail.com"
                 }
               }
             }
@@ -135,8 +701,7 @@
                 "schema": {
                   "type": "object"
                 },
-                "example": {
-                }
+                "example": {}
               }
             }
           },
@@ -145,15 +710,168 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object"
+                },
+                "example": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign_in": {
+      "post": {
+        "summary": "Authenticate user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "password"
+                    ]
+                  }
+                },
+                "example": {
+                  "login": {
+                    "email": "user2@hotmail.com",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API Authentication Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object",
                   "properties": {
-                    "error": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "token": {
                       "type": "string"
                     }
                   }
                 },
                 "example": {
-                  "error": "User already exists"
+                  "email": "user2@hotmail.com",
+                  "token": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTcxMjA2NzM0N30.__xUucFOhfkrnpvxUUYDm_pBRj9m2PFS68YOpPflPIs"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "summary": "Get object with user informations",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "User authentication key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user informations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": 13,
+                    "email": "user2@hotmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nope!"
                 }
               }
             }
@@ -161,11 +879,5 @@
         }
       }
     }
-  },
-  "servers": [
-    {
-      "url": "http://localhost:3000",
-      "description": "Local server"
-    }
-  ]
+  }
 }
