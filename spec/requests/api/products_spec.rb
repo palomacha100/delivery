@@ -48,13 +48,17 @@ RSpec.describe "/stores/:store_id/products", type: :request do
             headers: {"Accept" => "application/json", "Authorization" => "Bearer #{signed_in["token"]}"},
             params: {
                 product: {
-                    title: "", price: 5, description: "Saborosa panqueca", 
-                    category: "almoço",
-                    portion: "2 pessoas"
+                    title: "", price:"", description: "Panqueca", 
+                    category: "",
+                    portion: ""
                 }
             }
             json = JSON.parse(response.body)
             expect(json["title"]).to eq ["can't be blank", "is too short (minimum is 3 characters)"]
+            expect(json["price"]).to eq ["can't be blank", "is not a number"]
+            expect(json["description"]).to eq ["is too short (minimum is 10 characters)"]
+            expect(json["category"]).to eq ["can't be blank"]
+            expect(json["portion"]).to eq ["can't be blank"]
             expect(response.status).to eq 422
         end
     end
