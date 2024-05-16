@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   devise_for :users
-  resources :stores
+  resources :stores do
+    resources :products
+  end
+
   mount Rswag::Ui::Engine => "/api-docs", as: :api_ui_docs 
   mount Rswag::Api::Engine => "/api-docs",
   as: :api_docs 
