@@ -2,6 +2,7 @@ class StoresController < ApplicationController
   skip_forgery_protection only: %i[create update]
   before_action :authenticate!
   before_action :set_store, only: %i[ show edit update destroy ]
+  rescue_from User::InvalidToken, with: :not_authorized
 
   # GET /stores or /stores.json
   def index
@@ -83,5 +84,9 @@ class StoresController < ApplicationController
       else
         required.permit(:name, :image)
       end
+    end
+
+    def not_authorized(e)
+      render json: {message: "Nope!"}, status: 401
     end
 end

@@ -1,7 +1,9 @@
 class ProductsController < ApplicationController
   before_action :authenticate!
   before_action :set_product, only: %i[ show edit update destroy ]
-  def listing
+  rescue_from User::InvalidToken, with: :not_authorized
+  skip_forgery_protection
+  
     if current_user.admin?
       redirect_to root_path, notice: "No permission for you"
     end
@@ -18,6 +20,8 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-
+  def not_authorized(e)
+    render json: {message: "Nope!"}, status: 401
+  end
 
 end
