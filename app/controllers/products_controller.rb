@@ -7,4 +7,11 @@ class ProductsController < ApplicationController
     @products = Product.includes(:store)
   end
 
+  private
+  def product_params
+    required = params.require(:product),
+    permit(:title, :price, :description, :image, :category, :portion)
+    end
+  end
+
 end
