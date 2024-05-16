@@ -14,7 +14,8 @@ RSpec.describe "/stores/:store_id/products", type: :request do
   }
     describe "GET /show" do
       it "renders a successful response with products data" do
-        Product.create title: "panqueca", price: 5, description: "Saborosa panqueca", category: "almoço",
+        Product.create title: "panqueca", price: 5, description: "Saborosa panqueca", 
+        category: "almoço",
         portion: "2 pessoas",
         store: store
         get "/stores/#{store.id}/products",
@@ -25,6 +26,24 @@ RSpec.describe "/stores/:store_id/products", type: :request do
         expect(json["data"][0]["price"].to_i).to eq 5
       end
     end
-    
+
+    describe "POST /products" do
+        it "creates product successfully" do
+            post "/stores/#{store.id}/products",
+            headers: {"Accept" => "application/json", "Authorization" => "Bearer #{signed_in["token"]}"},
+            params: {
+                product: {
+                    title: "panqueca", price: 5, description: "Saborosa panqueca", 
+                    category: "almoço",
+                    portion: "2 pessoas"
+                }
+            }
+            json = JSON.parse(response.body)
+            expect(json["id"]).to eq 1
+            expect(json["title"]).to eq "panqueca"
+            expect(response.status).to eq 201
+        end
+    end
+
     
 end
