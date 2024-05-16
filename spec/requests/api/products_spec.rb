@@ -61,6 +61,27 @@ RSpec.describe "/stores/:store_id/products", type: :request do
             expect(json["portion"]).to eq ["can't be blank"]
             expect(response.status).to eq 422
         end
+
+        describe "PUT /products" do
+            it "updates product successfully" do
+                product = Product.create title: "panqueca", price: 5, description: "Saborosa panqueca", 
+                category: "almoço",
+                portion: "2 pessoas",
+                store: store
+                put "/stores/#{store.id}/products/#{product.id}",
+                headers: {"Accept" => "application/json", 
+                "Authorization" => "Bearer #{signed_in["token"]}"},
+                params: {
+                    product: {
+                        price: 6
+                    }
+                }
+                json = JSON.parse(response.body)
+                expect(json["price"].to_i).to eq 6
+                expect(response.status).to eq 200
+            end
+        end
+
     end
 
 
