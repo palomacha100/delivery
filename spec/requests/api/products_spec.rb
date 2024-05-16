@@ -43,7 +43,22 @@ RSpec.describe "/stores/:store_id/products", type: :request do
             expect(json["title"]).to eq "panqueca"
             expect(response.status).to eq 201
         end
+        it "adds error if product registration is incomplete" do
+            post "/stores/#{store.id}/products",
+            headers: {"Accept" => "application/json", "Authorization" => "Bearer #{signed_in["token"]}"},
+            params: {
+                product: {
+                    title: "", price: 5, description: "Saborosa panqueca", 
+                    category: "almoço",
+                    portion: "2 pessoas"
+                }
+            }
+            json = JSON.parse(response.body)
+            expect(json["title"]).to eq ["can't be blank", "is too short (minimum is 3 characters)"]
+            expect(response.status).to eq 422
+        end
     end
+
 
     
 end
