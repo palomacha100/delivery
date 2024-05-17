@@ -27,8 +27,7 @@ cnpj = ["12345678900123", "12345678900122"]
  Store.find_or_create_by!(
  name: store, user: user, cnpj: cnpj[index], phonenumber: "0012345678", 
  city: "Belo Horizonte", cep: "12345678", state: "Minas Gerais", neighborhood: "Centro", 
- address: "Rua A", numberadress: "10", establisment: "Comida chinesa", 
- image: "https://cdn.pixabay.com/photo/2024/04/01/05/18/green-8667981_1280.jpg",
+ address: "Rua A", numberadress: "10", establishment: "Comida chinesa"
  )
 end
 
@@ -41,7 +40,10 @@ end
 ].each do |dish|
  store = Store.find_by(name: "Orange Curry")
  Product.find_or_create_by!(
- title: dish, store: store, price: 10
+ title: dish, store: store, price: 10, 
+ description: "Deliciosa comida típica", 
+ category: "Petisco", portion: "2 pessoas"
+
  )
 end
 [
@@ -53,9 +55,8 @@ end
 ].each do |dish|
  store = Store.find_by(name: "Belly King")
  Product.find_or_create_by!(
- title: dish, store: store, price: 10, description: "Deliciosa comida típica", 
- image: "https://cdn.pixabay.com/photo/2024/04/01/05/18/green-8667981_1280.jpg", 
- category: "Petisco", 
- portion: "2 pessoas"
+ title: dish, store: store, price: 10, 
+ description: "Deliciosa comida típica", 
+ category: "Petisco", portion: "2 pessoas"
  )
 end
