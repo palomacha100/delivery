@@ -1,9 +1,18 @@
 class Store < ApplicationRecord
-  has_one_attached :image
+  has_one_attached :image, presence: true
   belongs_to :user
   before_validation :ensure_seller
-  validates :name, presence: true, length: {minimum: 3}
   has_many :products
+  validates :name, presence: true, length: {minimum: 3}
+  validates :cnpj, presence: true, length: {is:14}
+  validates :phonenumber, presence: true, length: {minimum: 10, maximum: 11}
+  validates :city, presence: true
+  validates :cep, presence: true, length: {is:8}
+  validates :state, presence: true
+  validates :neighborhood, presence: true
+  validates :address, presence: true
+  validades :numberadress, presence: true
+  validades :establisment, presence: true
 
   private
 
