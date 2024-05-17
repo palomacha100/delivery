@@ -82,10 +82,10 @@ class StoresController < ApplicationController
       if current_user.admin?
         required.permit(:name, :user_id, :image, :cnpj, 
         :phonenumber, :city, :cep, :state, :neighborhood, 
-        :address. :numberadress, :establisment)
+        :address, :numberaddress, :establishment)
       else
         required.permit(:name, :image, :cnpj, :phonenumber, 
-        :city, :cep, :state, :neighborhood, :address, :numberadress, :establisment)
+        :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment)
       end
     end
 
