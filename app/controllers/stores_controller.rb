@@ -85,7 +85,7 @@ class StoresController < ApplicationController
         :address. :numberadress, :establisment)
       else
         required.permit(:name, :image, :cnpj, :phonenumber, 
-        :city, :cep, :state, :neighborhood, :address. :numberadress, :establisment)
+        :city, :cep, :state, :neighborhood, :address, :numberadress, :establisment)
       end
     end
 
