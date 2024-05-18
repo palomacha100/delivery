@@ -1,12 +1,3 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
 admin = User.find_by(
     email: "admin@example.com"
 )
@@ -20,10 +11,12 @@ if !admin
     admin.save!
 end
 
+cnpj = ["12345678900123", "12345678900122"]
+
 [
     "Orange Curry",
     "Belly King"
-].each do |store|
+].each_with_index do |store, index|
     user = User.new(
         email: "#{store.split.map { |s| s.downcase }.join(".")}@example.com",
         password: "123456",
@@ -32,7 +25,9 @@ end
     )
     user.save!
  Store.find_or_create_by!(
- name: store, user: user
+ name: store, user: user, cnpj: cnpj[index], phonenumber: "0012345678", 
+ city: "Belo Horizonte", cep: "12345678", state: "Minas Gerais", neighborhood: "Centro", 
+ address: "Rua A", numberadress: "10", establishment: "Comida chinesa"
  )
 end
 
@@ -45,7 +40,10 @@ end
 ].each do |dish|
  store = Store.find_by(name: "Orange Curry")
  Product.find_or_create_by!(
- title: dish, store: store, price: 10
+ title: dish, store: store, price: 10, 
+ description: "Deliciosa comida típica", 
+ category: "Petisco", portion: "2 pessoas"
+
  )
 end
 [
@@ -57,6 +55,8 @@ end
 ].each do |dish|
  store = Store.find_by(name: "Belly King")
  Product.find_or_create_by!(
- title: dish, store: store, price: 10
+ title: dish, store: store, price: 10, 
+ description: "Deliciosa comida típica", 
+ category: "Petisco", portion: "2 pessoas"
  )
 end
