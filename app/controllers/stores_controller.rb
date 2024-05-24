@@ -1,5 +1,5 @@
 class StoresController < ApplicationController
-  skip_forgery_protection only: %i[create update]
+  skip_forgery_protection only: %i[create update destroy]
   before_action :authenticate!
   before_action :set_store, only: %i[ show edit update destroy ]
   rescue_from User::InvalidToken, with: :not_authorized
@@ -62,7 +62,7 @@ class StoresController < ApplicationController
 
   # DELETE /stores/1 or /stores/1.json
   def destroy
-    @store.destroy!
+    @store.discard!
 
     respond_to do |format|
       format.html { redirect_to stores_url, notice: "Store was successfully destroyed." }
