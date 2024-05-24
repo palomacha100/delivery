@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include Discard::Model
+
   has_one_attached :image
   has_many :order_items
   has_many :orders, through: :order_items
@@ -8,5 +10,4 @@ class Product < ApplicationRecord
   validates :description, presence: true, length: {minimum: 10, maximum: 100}
   validates :category, presence: true
   validates :portion, presence: true
-
 end

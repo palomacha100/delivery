@@ -1,6 +1,8 @@
 require 'dotenv/load'
 
+
 class User < ApplicationRecord
+  include Discard::Model
 
   validates :role, presence: true
   

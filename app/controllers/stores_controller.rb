@@ -7,7 +7,7 @@ class StoresController < ApplicationController
   # GET /stores or /stores.json
   def index
     if current_user.admin?
-      @stores = Store.all
+      @stores = Store.all.includes([:image_attachment])
     else 
       @stores = Store.where(user: current_user)
     end
@@ -82,10 +82,10 @@ class StoresController < ApplicationController
       if current_user.admin?
         required.permit(:name, :user_id, :image, :cnpj, 
         :phonenumber, :city, :cep, :state, :neighborhood, 
-        :address, :numberaddress, :establishment)
+        :address, :numberaddress, :establishment, :complementadress)
       else
         required.permit(:name, :image, :cnpj, :phonenumber, 
-        :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment)
+        :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment, :complementadress)
       end
     end
 
