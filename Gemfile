@@ -76,6 +76,6 @@ gem "rack-cors", "~> 2.0"
 
 gem 'dotenv'
 
-
-
 gem "state_machines-activerecord", "~> 0.9.0"
+
+gem 'discard', '~> 1.2'
