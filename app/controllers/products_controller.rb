@@ -5,7 +5,12 @@ class ProductsController < ApplicationController
   rescue_from User::InvalidToken, with: :not_authorized
 
   def index
-      render json: { data: @store.products.all }, status: :ok
+      products = @store.products.all.map do |product|
+        product_attributes = product.attributes
+        product_attributes[:image_url] = url_for(product.image) if product.image.attached?
+        product_attributes
+      end
+      render json: { data: products }, status: :ok
   end
 
   def listing
