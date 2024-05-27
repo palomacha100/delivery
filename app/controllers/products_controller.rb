@@ -5,6 +5,21 @@ class ProductsController < ApplicationController
   rescue_from User::InvalidToken, with: :not_authorized
 
   def index
+    respond_to do |format|
+      format.json do
+        if buyer?
+          page = params.fetch(:page, 1)
+
+          @products = Product.
+          where(store_id: params[:store_id]).
+          order(:title).
+          page(page)
+        end
+      end
+    end
+  end
+
+  def index
       products = @store.products.all.map do |product|
         product_attributes = product.attributes
         product_attributes[:image_url] = url_for(product.image) if product.image.attached?
