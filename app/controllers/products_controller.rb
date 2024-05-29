@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController  
   before_action :authenticate!
   before_action :set_locale!
-  before_action :set_store, only: %i[ update destroy index ]
+  before_action :set_store, only: %i[ update destroy index show]
   skip_forgery_protection 
   rescue_from User::InvalidToken, with: :not_authorized
 
@@ -10,24 +10,22 @@ class ProductsController < ApplicationController
       format.json do
         if buyer?
           page = params.fetch(:page, 1)
-
           @products = Product.
           where(store_id: params[:store_id]).
           order(:title).
           page(page)
+        else 
+          products = @store.products.all.map do |product|
+            product_attributes = product.attributes
+            product_attributes[:image_url] = url_for(product.image) if product.image.attached?
+            product_attributes
+          end
+          render json: { data: products }, status: :ok
         end
       end
     end
   end
 
-  def index
-      products = @store.products.all.map do |product|
-        product_attributes = product.attributes
-        product_attributes[:image_url] = url_for(product.image) if product.image.attached?
-        product_attributes
-      end
-      render json: { data: products }, status: :ok
-  end
 
   def listing
     if request.format == Mime[:json]
@@ -71,6 +69,10 @@ class ProductsController < ApplicationController
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def show
+    @product = @store.products.find_by(id: params[:id])
   end
 
   def destroy
