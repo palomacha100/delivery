@@ -10,15 +10,16 @@ class ProductsController < ApplicationController
       format.json do
         if buyer?
           page = params.fetch(:page, 1)
-          @products = Product.
+          @products = Product.includes(:image_attachment).
           where(store_id: params[:store_id]).
-          order(:title).
-          page(page)
+          order(:title)
+          @products = @products.page(page)
         else 
           products = @store.products.all.map do |product|
             product_attributes = product.attributes
             product_attributes[:image_url] = url_for(product.image) if product.image.attached?
             product_attributes
+         
           end
           render json: { data: products }, status: :ok
         end
