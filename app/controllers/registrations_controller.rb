@@ -1,15 +1,15 @@
 class RegistrationsController < ApplicationController
-    skip_forgery_protection only: [:create, :me, :sign_in]
-    before_action :authenticate!, only: [:me]
-    rescue_from User::InvalidToken, with: :not_authorized
+  skip_forgery_protection only: [:create, :me, :sign_in]
+  before_action :authenticate!, only: [:me]
+  rescue_from User::InvalidToken, with: :not_authorized
  
-    def me
-       render json: {"email": current_user[:email], "id": current_user[:id] }
-    end
+  def me
+    render json: {"email": current_user[:email], "id": current_user[:id] }
+  end
  
-    def sign_in
+  def sign_in
     access = current_credential.access
-     user = User.where(role:access).find_by(email: sign_in_params[:email])
+    user = User.where(role:access).find_by(email: sign_in_params[:email])
      if !user || !user.valid_password?(sign_in_params[:password])
        render json: {message: "Nope!"}, status: 401
      else
@@ -17,6 +17,14 @@ class RegistrationsController < ApplicationController
        render json: {email: user.email, token: token}
      end
    end
+
+   def new_sign_in
+    @user = User.new
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
  
    def create
      @user = User.new(user_params)
@@ -32,6 +40,52 @@ class RegistrationsController < ApplicationController
         end
      end
    end
+
+   def active
+    @user = User.find(params[:id])
+    @user.undiscard 
+    redirect_to users_path, notice: 'User reactivated successfully.'
+   end
+
+   def sign_up
+    @user = User.new(sign_up_params)
+      if @user.save
+        redirect_to root_path, notice: 'User created successfully.'
+      else
+        render :new
+      end
+   end
+
+   def index
+    @users = User.all
+   end
+
+   def destroy
+    user = User.find(params[:id])
+      if user.discard!
+        redirect_to users_path, notice: 'User deactivate successfully.'
+      else
+        flash[:alert] = 'User not deactivated.'
+        redirect_to users_path
+      end
+  end
+
+  def edit_user
+    @user = User.find(params[:id])
+    if @user.update(user_params_update)
+      redirect_to users_path, notice: 'User was successfully updated.'
+    else
+      render edit_path, notice: 'User not was successfully updated.'
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def new
+    @user = User.new
+  end
  
     
    private
@@ -41,6 +95,12 @@ class RegistrationsController < ApplicationController
       .required(:user)
       .permit(:email, :password, :password_confirmation)
    end
+
+   def user_params_update
+    params
+      .required(:user)
+      .permit(:email, :role)
+  end
  
    def user_exists?(email)
        User.exists?(email: email)
@@ -53,7 +113,10 @@ class RegistrationsController < ApplicationController
    def not_authorized(e)
      render json: {message: "Nope!"}, status: 401
    end
- 
+
+   def sign_up_params
+    params.require(:user).permit(:email, :password, :password_confirmation, :role)
+  end 
  end
  
  

@@ -1,0 +1,17 @@
+<div class="user-details">
+  <p class="notice"><%= notice %></p>
+  <h2>User: <%= @user.email%></h2>
+  <% if @user.discarded? %>
+      <h3>Status: inativo</h3>
+    <% else  %>
+      <h3>Status: ativo</h3>
+    <% end  %>
+  <p><strong>id:</strong> <%= @user.id%></p>
+  <%= link_to "Go To The users", users_path%>
+
+  <% if @user.discarded? %>
+               <%= button_to "Active this user", active_path(id: @user.id), method: :put, class: "btn btn-new-store" %>
+           <% else  %>
+              <%= button_to "Excluir usuário",  destroy_path(id: @user.id), method: :delete,  form: {data: { turbo_confirm: "Tem certeza que deseja excluir esse produto?"  }}, class: "btn btn-show-store"%>
+          <% end  %>
+</div>

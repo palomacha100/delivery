@@ -1,0 +1,13 @@
+<div class="card-two">
+  <h1>Editing product</h1>
+
+  <%= render "form",product: @product %>
+
+  <br>
+
+  <div class="father-user-links">
+    <div class="store-actions-two">
+      <%= link_to "Show this product",  store_product_path(@store, @product), class:"btn btn-create-store" %>
+</div>
+  </div>
+</div>

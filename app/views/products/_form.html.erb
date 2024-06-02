@@ -1,0 +1,34 @@
+<%=  form_with(model: product, url: store_product_path(store_id: @store, id: @product), 
+method: :patch) do |form| %>
+    <% if product.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+  
+        <ul>
+          <% product.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="form-group">
+      <%= form.label :title, style: "display: block", class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-input' %>
+    </div>
+  
+    <div class="form-group">
+      <%= form.label :price, style: "display: block", class: 'form-label' %>
+      <%= form.number_field :price, class: 'form-input'%>
+    </div>
+  
+  
+    <div class="form-group">
+      <%= form.label :image, style: "display: block", class: 'form-label' %>
+      <%= form.file_field :image %>
+    </div>
+  
+    <div>
+      <%= form.submit "Update Poduct", class:"btn btn-new-store" %>
+    </div>
+  <% end %>
