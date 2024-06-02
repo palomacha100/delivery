@@ -7,7 +7,7 @@ class StoresController < ApplicationController
   # GET /stores or /stores.json
   def index
     if current_user.admin?
-      @stores = Store.includes([:image_attachment])
+      @stores = Store.all
     elsif current_user.buyer?
       @stores = Store.kept.includes([:image_attachment])
     else 
@@ -46,6 +46,17 @@ class StoresController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @store.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def active_store
+    @store = Store.find(params[:id])
+    if @store.user.discarded?
+      flash[:notice] = "Unprocessable entity."
+      render :show, status: :unprocessable_entity
+    else
+      @store.undiscard 
+      redirect_to stores_path, notice: 'Store reactivated successfully.'
     end
   end
 

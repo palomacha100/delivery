@@ -1,0 +1,22 @@
+<h1 id="product-title">Managing Users</h1>
+<div class="father-user-links">
+  <div class="users-page-links">
+    <%= link_to "Create a new user", sign_up_path, class: 'btn btn-new-store' %>
+    <%= link_to "Home", root_path, class: 'btn btn-create-store' %>
+  </div>
+</div>
+<p class="notice"><%= notice %></p>
+<div class="products-container">
+  <% @users.each do |user| %>
+      <div class="card">
+        <div class="card-content">
+          <h3><%= user.email %></h3>
+          <h3><%= user.role %></h3>
+
+          <%= link_to "Show this user", show_path(id: user.id) %>
+          <%= link_to "Edit this user",  edit_path(id: user.id)%>
+        </div>
+     </div>
+      <hr />
+  <% end %>
+</div>

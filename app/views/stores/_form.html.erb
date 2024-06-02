@@ -17,7 +17,59 @@
     <%= form.text_field :name %>
   </div>
 
-  <% if current_user.admin? %>
+  <div>
+    <%= form.label :cnpj, style: "display: block" %>
+    <%= form.text_field :cnpj %>
+  </div>
+
+  <div>
+    <%= form.label :phonenumber, style: "display: block" %>
+    <%= form.text_field :phonenumber %>
+  </div>
+
+  <div>
+    <%= form.label :cep, style: "display: block" %>
+    <%= form.text_field :cep %>
+  </div>
+
+  <div>
+    <%= form.label :city, style: "display: block" %>
+    <%= form.text_field :city %>
+  </div>
+
+  <div>
+    <%= form.label :state, style: "display: block" %>
+    <%= form.text_field :state%>
+  </div>
+
+  <div>
+    <%= form.label :neighborhood, style: "display: block" %>
+    <%= form.text_field :neighborhood %>
+  </div>
+
+  <div>
+    <%= form.label :address, style: "display: block" %>
+    <%= form.text_field :address %>
+  </div>
+
+  <div>
+    <%= form.label :numberaddress, style: "display: block" %>
+    <%= form.text_field :numberaddress %>
+  </div>
+
+  <div>
+    <%= form.label :complementadress, style: "display: block" %>
+    <%= form.text_field :complementadress %>
+  </div>
+
+  <div>
+    <%= form.label :establishment, style: "display: block" %>
+    <%= form.text_field :establishment %>
+  </div>
+
+  
+
+  <% if current_user.admin? && store.user_id.nil?%>
   <div>
     <%= form.label :seller, style: "display: block" %>
     <%= form.collection_select :user_id, @sellers, :id, :email,

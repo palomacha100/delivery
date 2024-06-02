@@ -1,9 +1,10 @@
 class ProductsController < ApplicationController  
   before_action :authenticate!
   before_action :set_locale!
-  before_action :set_store, only: %i[ update destroy index show]
+  before_action :set_store, only: %i[ edit update destroy index show ]
   skip_forgery_protection 
   rescue_from User::InvalidToken, with: :not_authorized
+  before_action :set_product, only: %i[ edit show ]
 
   def index
     respond_to do |format|
@@ -27,6 +28,17 @@ class ProductsController < ApplicationController
     end
   end
 
+  def active_product 
+    @store = Store.find(params[:store_id])
+    if @store.user.discarded? || @store.discarded?
+      flash[:notice] = "Unprocessable entity."
+      render :show, status: :unprocessable_entity
+    else
+      @product = @store.products.find(params[:id]).undiscard
+      redirect_to listing_path, notice: 'Product reactivated successfully'
+    end
+  end
+
 
   def listing
     if request.format == Mime[:json]
@@ -43,6 +55,9 @@ class ProductsController < ApplicationController
         @products = Product.includes(:store)
       end
     end   
+  end
+
+  def edit
   end
 
   def create
@@ -78,7 +93,7 @@ class ProductsController < ApplicationController
 
   def destroy
     @product = @store.products.find(params[:id])
-    @product.destroy
+    @product.discard!
 
     respond_to do |format|
       format.html { redirect_to store_products_url, notice: "Product was successfully destroyed." }
@@ -87,10 +102,6 @@ class ProductsController < ApplicationController
   end
 
   private
-
-  def set_product
-    @product = Product.find(params[:id])
-  end
 
   def set_store
     @store = Store.find(params[:store_id])
@@ -103,5 +114,15 @@ class ProductsController < ApplicationController
 
   def not_authorized(e)
     render json: {message: "Nope!"}, status: 401
+  end
+
+  def set_product
+    @product =  @store.products.find_by(id: params[:id])
+    if @product.nil?
+      respond_to do |format|
+        format.html { redirect_to store_url(@store), alert: "Product not found or has been discarded." }
+        format.json { render json: { error: "Product not found or has been discarded" }, status: :not_found }
+      end
+    end
   end
 end
