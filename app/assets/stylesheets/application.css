@@ -53,6 +53,23 @@ body {
     gap: 15px;
   }
 
+  .small-transparent-button {
+    background-color: transparent;
+    color: var(--dark-blue);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-family: 'Poppins';
+    font-weight: 700;
+    width: auto;
+    height: 2rem;
+    border: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .small-green-button,
   .small-red-button,
   .small-blue-button,
@@ -62,7 +79,7 @@ body {
   .medium-red-button, 
   .medium-green-button, 
   .medium-yellow-button, 
-  .medium-gray-button{
+  .medium-gray-button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.875rem;
@@ -111,7 +128,59 @@ body {
 .access_container{
   width: auto;
   display: flex;
+  justify-content: center;
   flex-direction: row;
   align-items: center;
   gap: 10px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 30px auto;
+  width: 600px;
+  height: 400x;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  align-items: center;
+}
+
+.title-styled {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  color: var(--dark-blue);
+  text-align: center;
+  padding: 15px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 560px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.field {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark-gray);
+}
+
+.field input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.actions {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap:5px;
 }
