@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   put "active", to: "registrations#active"
   get "show", to: "registrations#show"
 
+  post 'refresh', to: 'authentication#refresh'
+
   scope :buyers do
     resources :orders, only: [:index, :create, :update, :destroy]
   end
