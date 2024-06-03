@@ -1,13 +1,14 @@
 <head>
-    <%= stylesheet_link_tag 'application.css' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 </head>
+
 
 <body>
     <div id="container">
         <div id="image-container">
             <img id="image" src="/welcome.jpeg">
         </div>
-        <div id="text-container">
+        <div class="text-container">
             <h1 id="title">Welcome to delivery!</h1>
 
             <p style="color: green"><%= notice %></p>
@@ -15,16 +16,17 @@
             <% if current_user %>
                 <p>Logged in as <strong><%= current_user.email %></strong></p>
                 <%= button_to "Sign out", destroy_user_session_path, 
-                method: :delete %>
-                <%= link_to "listing", listing_path %>
-                <%= link_to "users", users_path %>
+                method: :delete, class: "button" %>
+                <%= link_to "listing", listing_path, class: "button" %>
+                <%= link_to "users", users_path, class: "button" %>
             <% else %>
-            
-                <%= link_to "Sign in", new_user_session_path %>
-                or
-                <%= link_to "Sign up", sign_up_path %>
+            <div class="access_container">
+                <%= link_to "Sign in", new_user_session_path, class: "medium_blue_button" %>
+                <%= link_to "Sign up", sign_up_path, class: "medium_blue_button" %>
             <% end %>
+            </div>
         </div>
     </div>
 </body>
+
 

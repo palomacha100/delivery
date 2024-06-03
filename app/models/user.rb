@@ -1,8 +1,8 @@
 require 'dotenv/load'
 
-
 class User < ApplicationRecord
   include Discard::Model
+  has_many :refresh_token
 
   validates :role, presence: true
   

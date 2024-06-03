@@ -9,17 +9,14 @@ class RegistrationsController < ApplicationController
  
   def sign_in
     access = current_credential.access
-    user = User.where(role:access).find_by(email: sign_in_params[:email])
-     if !user || !user.valid_password?(sign_in_params[:password])
-       render json: {message: "Nope!"}, status: 401
-     else
-       token = User.token_for(user)
-       render json: {email: user.email, token: token}
-     end
-   end
-
-   def new_sign_in
-    @user = User.new
+    user = User.kept.where(role: access).find_by(email: sign_in_params[:email])
+    if !user || !user.valid_password?(sign_in_params[:password])
+      render json: {message: "Nope!"}, status: 401
+    else
+      refresh_token = user.refresh_tokens.create!(expires_at: 30.days.from_now)
+      token = User.token_for(user)
+      render json: {email: user.email, token: token, refresh_token: refresh_token.refresh_token}
+    end
   end
 
   def show
@@ -85,6 +82,16 @@ class RegistrationsController < ApplicationController
 
   def new
     @user = User.new
+  end
+
+  def refresh
+    refresh_token = RefreshToken.find_by(refresh_token: params[:refresh_token])
+    if refresh_token && refresh_token.expires_at > Time.current
+      token = User.token_for(user)
+      render json: {email: user.email, token: token, refresh_token: refresh_token.refresh_token}, status: :ok
+    else
+      render json: { error: 'Invalid or expired refresh token' }, status: :unauthorized
+    end
   end
  
     
