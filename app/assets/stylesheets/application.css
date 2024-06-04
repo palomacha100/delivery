@@ -99,7 +99,7 @@ body {
     opacity: 0.8;
   }
 
-.small-blue-button, .medium_blue_button {
+.small-blue-button, .medium_blue_button, .large-blue-button {
   background-color: var(--dark-blue);
 }
 
@@ -119,8 +119,27 @@ body {
   background-color: var(--dark-gray);
 }
 
+.large-blue-button {
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.875rem;
+    font-family: 'Poppins';
+    font-weight: 700;
+    width: 18.75rem;
+    height: 2.8rem;
+    color: white;
+    border: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .medium_blue_button, 
-.medium-red-button, .medium-green-button, .medium-yellow-button, .medium-gray-button  {
+.medium-red-button, 
+.medium-green-button, 
+.medium-yellow-button, 
+.medium-gray-button  {
   width: 10rem;
   height: 2.8rem;
 }
@@ -140,7 +159,7 @@ body {
   justify-content: center;
   margin: 30px auto;
   width: 600px;
-  height: 400x;
+  max-height: 800px;
   border: 1px solid #ddd;
   border-radius: 5px;
   align-items: center;
@@ -184,3 +203,12 @@ body {
   justify-content: center;
   gap:5px;
 }
+
+.field select {
+  width: 200px;
+    height: 2.8rem;
+    font-family: 'Poppins';
+    color: var(--dark-gray);
+    padding: 5px;
+}
+ 
