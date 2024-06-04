@@ -1,12 +1,12 @@
-<div class="container-signup">
-  <h2>Sign up</h2>
+<div class="form-container">
+  <h2 class="title-styled">Sign up</h2>
 
   <%= form_with(model: @user, url: sign_up_path) do |form| %>
     <%= render "devise/shared/error_messages", resource: @user %>
 
     <div class="field">
       <%= form.label :email %><br />
-      <%= form.email_field :email, autofocus: true, autocomplete: "email" %>
+      <%= form.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
     </div>
 
     <div class="field">
@@ -14,21 +14,21 @@
       <% if @minimum_password_length %>
         <em>(<%= @minimum_password_length %> characters minimum)</em>
       <% end %><br />
-      <%= form.password_field :password, autocomplete: "new-password" %>
+      <%= form.password_field :password, autocomplete: "new-password", class: 'form-control' %>
     </div>
 
     <div class="field">
       <%= form.label :password_confirmation %><br />
-      <%= form.password_field :password_confirmation, autocomplete: "new-password" %>
+      <%= form.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
     </div>
 
-    <div class="field role-input">
+    <div class="field">
       <%= form.label :role %><br />
-      <%= form.select :role, User.roles.keys, class: 'role-input' %>
+      <%= form.select :role, User.roles.keys, class: 'select-input' %>
     </div>
 
     <div class="actions">
-      <%= form.submit "Sign up" %>
+      <%= form.submit "Sign up", class: 'medium_blue_button' %>
     </div>
   <% end %>
 </div>
