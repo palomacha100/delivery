@@ -35,7 +35,22 @@ Rails.application.routes.draw do
   post 'refresh', to: 'registrations#refresh'
 
   scope :buyers do
-    resources :orders, only: [:index, :create, :update, :destroy]
+    resources :orders, only: [:index, :create, :update, :destroy] do
+      member do
+        put 'pay'
+        put 'payment_pending'
+        put 'confirm_payment'
+        put 'payment_confirmed'
+        put 'payment_failed'
+        put 'send_to_seller'
+        put 'accept'
+        put 'prepare'
+        put 'dispatch'
+        put 'deliver'
+        put 'complete'
+        put 'cancel'
+      end
+    end
   end
 
   root to: "welcome#index"
