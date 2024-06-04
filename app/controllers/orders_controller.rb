@@ -1,6 +1,9 @@
 class OrdersController < ApplicationController
     skip_forgery_protection only: [:create]
     before_action :authenticate!, :only_buyers!
+    before_action :set_order, only: [:show, :update, :destroy, 
+    :pay, :confirm_payment, :send_to_seller, :accept, :prepare, 
+    :dispatch, :deliver, :complete, :cancel]
 
     def index
         @orders = Order.where(buyer: current_user)
@@ -20,6 +23,6 @@ class OrdersController < ApplicationController
     private
 
     def order_params
-        params.require(:order).permit([:store_id])
-    end
+        params.require(:order).permit(:store_id, order_items_attributes: [ :product_id, :amount, :price])
+      end
 end
