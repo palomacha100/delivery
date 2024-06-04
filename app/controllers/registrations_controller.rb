@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
-  skip_forgery_protection only: [:create, :me, :sign_in]
-  before_action :authenticate!, only: [:me]
+  skip_forgery_protection only: [:create, :me, :sign_in, :refresh]
+  before_action :authenticate!, only: [:me ]
   rescue_from User::InvalidToken, with: :not_authorized
  
   def me
@@ -87,6 +87,7 @@ class RegistrationsController < ApplicationController
   def refresh
     refresh_token = RefreshToken.find_by(refresh_token: params[:refresh_token])
     if refresh_token && refresh_token.expires_at > Time.current
+      user = refresh_token.user
       token = User.token_for(user)
       render json: {email: user.email, token: token, refresh_token: refresh_token.refresh_token}, status: :ok
     else
