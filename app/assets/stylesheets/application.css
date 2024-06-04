@@ -99,7 +99,7 @@ body {
     opacity: 0.8;
   }
 
-.small-blue-button, .medium_blue_button {
+.small-blue-button, .medium_blue_button, .large-blue-button {
   background-color: var(--dark-blue);
 }
 
@@ -117,6 +117,22 @@ body {
 
 .small-gray-button, .medium-gray-button {
   background-color: var(--dark-gray);
+}
+
+.large-blue-button {
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.875rem;
+    font-family: 'Poppins';
+    font-weight: 700;
+    width: 18.75rem;
+    height: 2.8rem;
+    color: white;
+    border: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .medium_blue_button, 
