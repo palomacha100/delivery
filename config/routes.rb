@@ -7,12 +7,11 @@ Rails.application.routes.draw do
   }
 
   resources :stores do
-    resources :products do
+    resources :products
       member do
         put 'active_product', to: 'products#active_product'
         put 'active_store', to: 'stores#active_store'
       end
-    end
   end
 
   mount Rswag::Ui::Engine => "/api-docs", as: :api_ui_docs 
@@ -32,6 +31,8 @@ Rails.application.routes.draw do
   put "edit", to: "registrations#edit_user" 
   put "active", to: "registrations#active"
   get "show", to: "registrations#show"
+
+  post 'refresh', to: 'registrations#refresh'
 
   scope :buyers do
     resources :orders, only: [:index, :create, :update, :destroy]

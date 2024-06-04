@@ -1,23 +1,24 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+*,
 body {
     margin: 0;
+    padding: 0;
   }
+
+  :root {
+    --dark-blue: #2c5c8f;
+    --white: #fff;
+    --dark-gray: #48484d;
+    --red: #cc4b4e;
+    --yellow: #F29F05;
+    --light-blue: #b8c9e6;
+    --green: #33a33c;
+    --purple: #504c9c;
+    --medium-blue: #1bded8;
+    --hover-blue: #142a42;
+  }
+  
 
  #title {
     font-family: "Poppins";
@@ -42,26 +43,144 @@ body {
     width: 100%;
   }
 
-  #text-container {
+  .text-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-content: center;
     justify-content: center;
     width: 50%;
+    gap: 15px;
   }
 
-  #button-style {
-    width: 200px;
-    height: 40px;
-    background-color: #3ad2df;
-    border-radius: 3px;
+  .small-transparent-button {
+    background-color: transparent;
+    color: var(--dark-blue);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-family: 'Poppins';
+    font-weight: 700;
+    width: auto;
+    height: 2rem;
     border: none;
-    font-family: "Poppins";
-    font-size: 20px;
-    color: #122840;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  #button-style:hover {
-    background-color: #122840;
-    color: #fbfdfc;
+  .small-green-button,
+  .small-red-button,
+  .small-blue-button,
+  .small-yellow-button,
+  .small-gray-button,
+  .medium_blue_button, 
+  .medium-red-button, 
+  .medium-green-button, 
+  .medium-yellow-button, 
+  .medium-gray-button {
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-family: 'Poppins';
+    font-weight: 700;
+    width: auto;
+    height: 2rem;
+    color: white;
+    border: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
+  .medium_blue_button:hover {
+    opacity: 0.8;
+  }
+
+.small-blue-button, .medium_blue_button {
+  background-color: var(--dark-blue);
+}
+
+.small-yellow-button, .medium-yellow-button {
+  background-color: var(--yellow);
+}
+
+.small-green-button, .medium-green-button {
+  background-color: var(--green);
+}
+
+.small-red-button, .medium-red-button {
+  background-color: var(--red);
+}
+
+.small-gray-button, .medium-gray-button {
+  background-color: var(--dark-gray);
+}
+
+.medium_blue_button, 
+.medium-red-button, .medium-green-button, .medium-yellow-button, .medium-gray-button  {
+  width: 10rem;
+  height: 2.8rem;
+}
+
+.access_container{
+  width: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 30px auto;
+  width: 600px;
+  height: 400x;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  align-items: center;
+}
+
+.title-styled {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  color: var(--dark-blue);
+  text-align: center;
+  padding: 15px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 560px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.field {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark-gray);
+}
+
+.field input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.actions {
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap:5px;
+}
