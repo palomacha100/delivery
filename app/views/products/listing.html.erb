@@ -1,14 +1,29 @@
-<h1>Listing Products</h1>
-
-<div>
-  <% @products.each do |product| %>
+<header>
+  <div class="header-container">
     <div>
-      <h3><%= product.title %></h3>
-      <%= link_to "Show this product", store_product_path(store_id: product.store, id: product) %>
-
-      <p>Store: <%= product.store.name %></p> 
-      <%= link_to "Show this store", store_path(id: product.store)%>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
     </div>
-    <hr/>
-  <% end %>
-</div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="global-container">
+    <h1 class="title-styled">Gerenciamento de produtos</h1>
+  
+  <div>
+    <% @products.each do |product| %>
+      <div class="big-column-start-container">
+        <h2><%= product.title %></h2>
+        <%= link_to "Ver produto", store_product_path(store_id: product.store, id: product), class: 'small-green-button' %>
+       
+        <p class="text-styled">Loja: <%= product.store.name %></p> 
+        <%= link_to "Ver loja", store_path(id: product.store), class: 'small-transparent-button'%>
+      </div>
+      <hr/>
+    <% end %>
+  </div>
+  </div>
+</main>
