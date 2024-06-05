@@ -24,8 +24,9 @@
       <%= form.select :role, User.roles.keys, {}, { class: 'form-control', id: 'user-role' } %>
     </div>
 
-    <div class="form-group">
-      <%= form.submit 'Atualizar', class: 'small-blue-button', id: 'update-user-button' %>
+    <div class="inline-container">
+    <%= link_to "Voltar", users_path, class: 'small-blue-button' %>
+      <%= form.submit 'Atualizar', class: 'small-green-button', id: 'update-user-button' %>
     </div>
     
 <% end %>
