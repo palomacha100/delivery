@@ -4,13 +4,13 @@
     <%= render 'product', product: @product %>
 
     <div class="father-user-links">
-        <div class="store-actions-two">
-              <%= link_to "Edit this product", edit_store_product_path(@product.store, @product), class: "btn btn-edit-store" %> 
-              <%= link_to "Back to listing", listing_path, class: "btn btn-back-to-stores" %>
-           <% if @product.discarded? %>
-               <%= button_to "Active this product", active_product_store_product_path(store_id: @product.store.id, id: @product.id), method: :put, class: "btn btn-new-store" %>
-           <% else  %>
-              <%= button_to "Excluir produto",  store_product_path(store_id: @product.store.id, id: @product.id), method: :delete,  form: {data: { turbo_confirm: "Tem certeza que deseja excluir esse produto?"  }}, class: "btn btn-show-store"%>
+        <div class="inline-container">
+              <%= link_to "Editar", edit_store_product_path(@product.store, @product), class: "small-green-button" %> 
+              <% if @product.discarded? %>
+              <%= button_to "Ativar", active_product_store_product_path(store_id: @product.store.id, id: @product.id), method: :put, class: "small-green-button" %>
+              <% else  %>
+              <%= button_to "Excluir",  store_product_path(store_id: @product.store.id, id: @product.id), method: :delete,  form: {data: { turbo_confirm: "Tem certeza que deseja excluir esse produto?"  }}, class: "small-red-button"%>
+              <%= link_to "Voltar", listing_path, class: "small-blue-button" %>
           <% end  %>
         </div>
     </div>
