@@ -1,17 +1,16 @@
 <header>
   <div class="header-container">
-  <div>
-    <%= link_to "Início", root_path, class: 'small-blue-button' %>
-  </div>
-  <div class="header-inline">
-    <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
-    <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
-  </div>
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
   </div>
 </header>
 <main>
-  <div class="global-container"
-  </div>
+  <div class="global-container">
     <h1 class="title-styled">Gerenciamento de usuários</h1>
     <div class="inline-container">
       <%= link_to "Novo usuário", sign_up_path, class: 'medium-green-button' %>
@@ -31,6 +30,7 @@
     <hr />
   <% end %>
 </div>
+  </div>
 
 
 </main>
