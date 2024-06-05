@@ -1,22 +1,37 @@
-<h1 id="product-title">Managing Users</h1>
-<div class="father-user-links">
-  <div class="users-page-links">
-    <%= link_to "Create a new user", sign_up_path, class: 'btn btn-new-store' %>
-    <%= link_to "Home", root_path, class: 'btn btn-create-store' %>
+<header>
+  <div class="header-container">
+  <div>
+    <%= link_to "Início", root_path, class: 'small-blue-button' %>
   </div>
-</div>
-<p class="notice"><%= notice %></p>
-<div class="products-container">
-  <% @users.each do |user| %>
-      <div class="card">
-        <div class="card-content">
-          <h3><%= user.email %></h3>
-          <h3><%= user.role %></h3>
-
-          <%= link_to "Show this user", show_path(id: user.id) %>
-          <%= link_to "Edit this user",  edit_path(id: user.id)%>
-        </div>
-     </div>
-      <hr />
+  <div class="header-inline">
+    <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+    <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+  </div>
+  </div>
+</header>
+<main>
+  <div class="global-container"
+  </div>
+    <h1 class="title-styled">Gerenciamento de usuários</h1>
+    <div class="inline-container">
+      <%= link_to "Novo usuário", sign_up_path, class: 'medium-green-button' %>
+    </div>
+    <hr />
+    <p class="notice"><%= notice %></p>
+    <div class="products-container">
+    <% @users.each do |user| %>
+      <div class="column-start-container">
+        <h2><%= user.email %></h3>
+        <p class="text-styled"><%= user.role %></p>
+      </div>
+      <div class="inline-container">
+        <%= link_to "Detalhes", show_path(id: user.id),class: 'small-blue-button' %>
+        <%= link_to "Editar",  edit_path(id: user.id), class: 'small-green-button' %>
+      </div>
+    <hr />
   <% end %>
 </div>
+
+
+</main>
+
