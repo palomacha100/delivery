@@ -83,3 +83,7 @@ gem 'discard', '~> 1.2'
 gem "kaminari", "~> 1.2"
 
 gem 'rails-i18n', '~> 7.0.0'
+
+gem "faraday", "~> 2.9"
+
+gem "sidekiq", "~> 7.2"

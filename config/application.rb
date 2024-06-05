@@ -38,5 +38,9 @@ module Delivery
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.payment = config_for(:payment)
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end
