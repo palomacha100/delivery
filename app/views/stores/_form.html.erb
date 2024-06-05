@@ -11,7 +11,7 @@
       </ul>
     </div>
   <% end %>
-
+  <div class="global-container">
   <div class="field">
     <%= form.label :name, 'Nome da loja', style: "display: block" %>
     <%= form.text_field :name, class: 'form-control'%>
@@ -75,7 +75,8 @@
   </div>
   <% end %>
   <div class="inline-container">
-      <%= form.submit "Criar loja", class: 'small-green-button' %>
+      <%= form.submit "Salvar", class: 'small-green-button' %>
       <%= link_to "voltar", stores_path, class: 'small-blue-button' %>
     </div>
 <% end %>
+  </div>
