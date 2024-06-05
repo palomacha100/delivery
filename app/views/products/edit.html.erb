@@ -1,13 +1,18 @@
-<div class="card-two">
-  <h1>Editing product</h1>
-
-  <%= render "form",product: @product %>
-
-  <br>
-
-  <div class="father-user-links">
-    <div class="store-actions-two">
-      <%= link_to "Show this product",  store_product_path(@store, @product), class:"btn btn-create-store" %>
-</div>
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
   </div>
+</header>
+<main>
+  <div class="global-container">
+    <h1 class='title-styled'>Editar produto</h1>
+    <%= render "form",product: @product %>
+  <br>
 </div>
+</main>
