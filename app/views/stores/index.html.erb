@@ -1,14 +1,35 @@
-<p style="color: green"><%= notice %></p>
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </div>
+</header>
+<main>
+  <div class"global-container">
+    <p style="color: green"><%= notice %></p>
+    <h1 class="title-styled">Gerenciamento de lojas</h1>
+    <div class="inline-container">
+      <%= link_to "Nova loja", new_store_path, class: 'medium-green-button' %>
+    </div>
+    <hr/>
+    <div class="products-container">
+    <% @stores.each do |store| %>
+      <div class="column-start-container">
+        <h2><%= store.name %></h2>
+        <p class="text-styled">Id: <%= store.id %> </p>
+      </div>
+        <div class="inline-container">
+          <%= link_to "Detalhes", store, class: 'small-blue-button' %>
+        </div>
+        <hr />
+      <% end %>
+    </div>
+  </div>
+</main>
 
-<h1>Stores</h1>
-
-<div id="stores">
-  <% @stores.each do |store| %>
-    <%= render store %>
-    <p>
-      <%= link_to "Show this store", store %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New store", new_store_path %>
+  
