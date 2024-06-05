@@ -1,25 +1,65 @@
 <body>
 <% if current_user %>
-    <p>Logged in as <strong><%= current_user.email %></strong></p>
-    <%= button_to "Sign out", destroy_user_session_path, 
-        method: :delete, class: "button" %>
-    <%= link_to "listing", listing_path, class: "button" %>
-    <%= link_to "users", users_path, class: "button" %>
-    <% else %>
-    <div id="container">
-        <div id="image-container">
-            <img id="image" src="/welcome.jpeg">
-        </div>
-        <div class="text-container">
-            <h1 id="title">Welcome to delivery!</h1>
-            <p style="color: green"><%= notice %></p>
-            <div class="access_container">
-                <%= link_to "Sign in", new_user_session_path, class: "medium_blue_button" %>
-                <%= link_to "Sign up", sign_up_path, class: "medium_blue_button" %>
+  <header>
+    <div class="header-container">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </header>
+  <h1 class="title-styled">Dashboard</h1>
+  <main>
+    <section class="management">
+      <ul class="management-group">
+        <li class="management-item">
+          <%= link_to users_path do %>
+            <div class="management__content">
+              <img class="management-img" src="/users.jpeg" alt="Users">
+              <div class="management__info">
+                <h2>Usuários</h2>
+              </div>
             </div>
-        <% end %>
-        </div>
-    </div>             
+          <% end %>
+        </li>
+
+        <li class="management-item">
+        <%= link_to stores_path do %>
+          <div class="management__content">
+            <img class="management-img" src="/stores.jpeg" alt="Stores">
+            <div class="management__info">
+              <h2>Lojas</h2>
+            </div>
+          </div>
+          <% end %>
+        </li>
+
+        <li class="management-item">
+          <%= link_to listing_path do %>
+            <div class="management__content">
+              <img class="management-img" src="/products.jpeg" alt="Products">
+              <div class="management__info">
+                <h2>Produtos</h2>
+              </div>
+            </div>
+          <% end %>
+        </li>
+      </ul>
+    </section>
+  </main>
+<% else %>
+  <div id="container">
+    <div id="image-container">
+      <img id="image" src="/welcome.jpeg">
+    </div>
+    <div class="text-container">
+      <h1 id="title">Welcome to delivery!</h1>
+      <p style="color: green"><%= notice %></p>
+      <div class="access_container">
+        <%= link_to "Sign in", new_user_session_path, class: "medium_blue_button" %>
+        <%= link_to "Sign up", sign_up_path, class: "medium_blue_button" %>
+      </div>
+    </div>
+  </div>
+<% end %>
 </body>
 
 
