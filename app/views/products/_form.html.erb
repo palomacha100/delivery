@@ -12,23 +12,34 @@ method: :patch) do |form| %>
       </div>
     <% end %>
   
-    <div class="form-group">
-      <%= form.label :title, style: "display: block", class: 'form-label' %>
-      <%= form.text_field :title, class: 'form-input' %>
+    <div class="field">
+      <%= form.label :title, "Nome do produto", style: "display: block", class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-control' %>
     </div>
   
-    <div class="form-group">
-      <%= form.label :price, style: "display: block", class: 'form-label' %>
-      <%= form.number_field :price, class: 'form-input'%>
+    <div class="field">
+      <%= form.label :price, "Preço", style: "display: block", class: 'form-label' %>
+      <%= form.number_field :price, class: 'form-control'%>
     </div>
   
   
-    <div class="form-group">
-      <%= form.label :image, style: "display: block", class: 'form-label' %>
+    <div class="field">
+      <%= form.label :image, "Imagem", style: "display: block", class: 'form-label' %>
       <%= form.file_field :image %>
     </div>
+
+    <div class="field">
+      <%= form.label :description, "Descrição", style: "display: block", class: 'form-label' %>
+      <%= form.text_field :description, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+    <%= form.label :portion, "Serve quantas pessoas?", style: "display: block", class: 'form-label' %>
+    <%= form.text_field :portion, class: 'form-control' %>
+  </div>
   
-    <div>
-      <%= form.submit "Update Poduct", class:"btn btn-new-store" %>
+    <div class="inline-container">
+      <%= form.submit "Salvar", class:"small-green-button" %>
+      <%= link_to "Ver produto",  store_product_path(@store, @product), class:"small-blue-button" %>
     </div>
   <% end %>

@@ -1,17 +1,31 @@
-<div class="user-details">
+<header>
+  <div class="header-container">
+  <div>
+    <%= link_to "Início", root_path, class: 'small-blue-button' %>
+  </div>
+  <div class="header-inline">
+    <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+    <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+  </div>
+  </div>
+</header>
+<main>
+<div class="global-container">
   <p class="notice"><%= notice %></p>
   <h2>User: <%= @user.email%></h2>
   <% if @user.discarded? %>
-      <h3>Status: inativo</h3>
+      <p class="text-styled">Status: inativo</h3>
     <% else  %>
-      <h3>Status: ativo</h3>
+      <p class="text-styled">Status: ativo</h3>
     <% end  %>
-  <p><strong>id:</strong> <%= @user.id%></p>
-  <%= link_to "Go To The users", users_path%>
-
-  <% if @user.discarded? %>
-               <%= button_to "Active this user", active_path(id: @user.id), method: :put, class: "btn btn-new-store" %>
-           <% else  %>
-              <%= button_to "Excluir usuário",  destroy_path(id: @user.id), method: :delete,  form: {data: { turbo_confirm: "Tem certeza que deseja excluir esse produto?"  }}, class: "btn btn-show-store"%>
-          <% end  %>
+  <p class="text-styled">id: <%= @user.id%></p>
+  <div class="inline-container">
+    <%= link_to "Voltar", users_path, class: 'small-blue-button' %>
+    <% if @user.discarded? %>
+      <%= button_to "Activar", active_path(id: @user.id), method: :put, class: 'small-green-button' %>
+      <% else  %>
+        <%= button_to "Excluir",  destroy_path(id: @user.id), method: :delete,  form: {data: { turbo_confirm: "Tem certeza que deseja excluir esse produto?"  }}, class: "small-red-button"%>
+    <% end  %>
+  </div>
+</main>
 </div>

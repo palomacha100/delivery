@@ -1,13 +1,28 @@
-<div class="product-details">
-  <h2><%= product.title %></h2>
-  <% if product.image.attached? %>
-    <%= image_tag product.image, alt: product.title, class: "product-image" %>
-  <% end %>
-  <p><strong>Store:</strong> <%= product.store.name %></p>
-  <p><strong>Description:</strong> <%= product.description %></p>
-   <% if product.discarded? %>
-      <h3>Status: inativo</h3>
-    <% else  %>
-      <h3>Status: ativo</h3>
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="global-container">
+      <h2><%= product.title %></h2>
+      <% if product.image.attached? %>
+      <%= image_tag product.image, alt: product.title, class: "management-img" %>
+      <% end %>
+      <p class="text-styled">Loja: <%= product.store.name %></p>
+      <p class="text-styled">Descrição: <%= product.description %></p>
+      <p class="text-styled">Porção: <%= product.portion %></p>
+      <p class="text-styled">Categoria: <%= product.category %></p>
+      <% if product.discarded? %>
+      <p class="text-styled"><strong>Status: inativo</strong></p>
+      <% else  %>
+      <p class="text-styled"><strong>Status: ativo</strong></p>
     <% end  %>
+  </div>
 </div>

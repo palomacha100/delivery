@@ -1,14 +1,26 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @store %>
-
-<div>
-  <%= link_to "Edit this store", edit_store_path(@store) %> |
-  <%= link_to "Back to stores", stores_path %>
-
-  <% if @store.discarded? %>
-      <%= button_to "Active this store", active_store_store_path(id: @store.id), method: :put, data: { confirm: "Are you sure?" }, class: "btn btn-new-store"  %>
-    <% else %>
-      <%= button_to "Deactivate this store", store_path(id: @store.id), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir?" }, class: "btn btn-show-store"   %>
-    <% end %>
-</div>
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="global-container">
+    <p style="color: green"><%= notice %></p>
+    <h2><%= @store.name %></h2>
+    <div class="inline-container">
+      <%= link_to "Editar", edit_store_path(@store), class: 'small-green-button' %>
+      <% if @store.discarded? %>
+      <%= button_to "Ativar", active_store_store_path(id: @store.id), method: :put, data: { confirm: "Are you sure?" }, class: "small-green-button"  %>
+      <% else %>
+      <%= button_to "Desativar", store_path(id: @store.id), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir?" }, class: "small-red-button"   %>
+      <% end %>
+      <%= link_to "Voltar", stores_path, class: 'small-blue-button' %>
+    </div>
+  </div>
+</main>

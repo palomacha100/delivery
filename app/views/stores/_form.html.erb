@@ -11,75 +11,72 @@
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="global-container">
+  <div class="field">
+    <%= form.label :name, 'Nome da loja', style: "display: block" %>
+    <%= form.text_field :name, class: 'form-control'%>
   </div>
 
-  <div>
-    <%= form.label :cnpj, style: "display: block" %>
-    <%= form.text_field :cnpj %>
+  <div class="field">
+    <%= form.label :cnpj, 'CNPJ', style: "display: block" %>
+    <%= form.text_field :cnpj, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :phonenumber, style: "display: block" %>
-    <%= form.text_field :phonenumber %>
+  <div class="field">
+    <%= form.label :phonenumber, 'Telefone', style: "display: block" %>
+    <%= form.text_field :phonenumber, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :cep, style: "display: block" %>
-    <%= form.text_field :cep %>
+  <div class="field">
+    <%= form.label :cep, 'CEP', style: "display: block" %>
+    <%= form.text_field :cep, class: 'form-control'%>
   </div>
 
-  <div>
-    <%= form.label :city, style: "display: block" %>
-    <%= form.text_field :city %>
+  <div class="field">
+    <%= form.label :city, 'Cidade', style: "display: block" %>
+    <%= form.text_field :city, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :state, style: "display: block" %>
-    <%= form.text_field :state%>
+  <div class="field">
+    <%= form.label :state, 'Estado', style: "display: block" %>
+    <%= form.text_field :state, class: 'form-control'%>
   </div>
 
-  <div>
-    <%= form.label :neighborhood, style: "display: block" %>
-    <%= form.text_field :neighborhood %>
+  <div class="field">
+    <%= form.label :neighborhood, 'Bairro', style: "display: block" %>
+    <%= form.text_field :neighborhood, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :address, style: "display: block" %>
-    <%= form.text_field :address %>
+  <div class="field">
+    <%= form.label :address, 'Endereço', style: "display: block" %>
+    <%= form.text_field :address, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :numberaddress, style: "display: block" %>
-    <%= form.text_field :numberaddress %>
+  <div class="field">
+    <%= form.label :numberaddress, 'Número', style: "display: block" %>
+    <%= form.text_field :numberaddress, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :complementadress, style: "display: block" %>
-    <%= form.text_field :complementadress %>
+  <div class="field">
+    <%= form.label :complementadress, 'Complemento', style: "display: block" %>
+    <%= form.text_field :complementadress, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :establishment, style: "display: block" %>
-    <%= form.text_field :establishment %>
+  <div class="field">
+    <%= form.label :establishment, 'Estabelecimento', style: "display: block" %>
+    <%= form.text_field :establishment, class: 'form-control' %>
   </div>
-
-  
 
   <% if current_user.admin? && store.user_id.nil?%>
-  <div>
+  <div class="field">
     <%= form.label :seller, style: "display: block" %>
     <%= form.collection_select :user_id, @sellers, :id, :email,
     prompt: "Sellers..." %>
   </div>
   <% end %>
-
-  <div>
-    <%= form.submit %>
-  </div>
-
-
+  <div class="inline-container">
+      <%= form.submit "Salvar", class: 'small-green-button' %>
+      <%= link_to "voltar", stores_path, class: 'small-blue-button' %>
+    </div>
 <% end %>
+  </div>
