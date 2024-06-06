@@ -7,12 +7,18 @@ Rails.application.routes.draw do
   }
 
   resources :stores do
-    resources :products
+    resources :products do
       member do
         put 'active_product', to: 'products#active_product'
-        put 'active_store', to: 'stores#active_store'
       end
+    end
+    
+    member do
+      put 'active_store', to: 'stores#active_store'
+      get 'theme_options', to: 'stores#theme_options'
+    end
   end
+end
 
   mount Rswag::Ui::Engine => "/api-docs", as: :api_ui_docs 
   mount Rswag::Api::Engine => "/api-docs",
