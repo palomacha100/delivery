@@ -15,6 +15,7 @@ class Store < ApplicationRecord
   validates :address, presence: true
   validates :numberaddress, presence: true
   validates :establishment, presence: true
+  validates :theme, presence: true
 
   private
 
