@@ -1,7 +1,7 @@
 class StoresController < ApplicationController
   skip_forgery_protection only: %i[create update destroy]
   before_action :authenticate!
-  before_action :set_store, only: %i[ show edit update destroy ]
+  before_action :set_store, only: %i[ show edit update destroy theme_options ]
   rescue_from User::InvalidToken, with: :not_authorized
 
   # GET /stores or /stores.json
@@ -81,6 +81,20 @@ class StoresController < ApplicationController
       format.html { redirect_to stores_url, notice: "Store was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def theme_options
+    render json: {
+      themes: [
+        { value: 'blue', label: 'Azul' },
+        { value: 'red', label: 'Vermelho' },
+        { value: 'green', label: 'Verde' },
+        { value: 'yellow', label: 'Amarelo' },
+        { value: 'purple', label: 'Roxo' },
+        { value: 'lilac', label: 'Lilás' },
+        { value: 'rose', label: 'Rosa' }
+      ]
+    }
   end
 
   private
