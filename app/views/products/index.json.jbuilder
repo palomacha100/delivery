@@ -20,6 +20,7 @@ json.result do
             json.price number_to_currency(product.price)
             if product.image.attached?
                 json.image_url rails_blob_url(product.image, only_path: true)
+                json.thumbnail_url rails_representation_url(product.image.variant(resize_to_limit: [50, 50]), only_path: true)
             end
         end
     end

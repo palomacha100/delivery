@@ -341,6 +341,7 @@ DEPENDENCIES
   jbuilder
   jwt (~> 2.8)
   kaminari (~> 1.2)
+  mini_magick (~> 4.11)
   puma (>= 5.0)
   rack-cors (~> 2.0)
   rails (~> 7.1.3)
