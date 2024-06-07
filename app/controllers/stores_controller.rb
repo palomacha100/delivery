@@ -1,7 +1,7 @@
 class StoresController < ApplicationController
   skip_forgery_protection only: %i[create update destroy]
   before_action :authenticate!
-  before_action :set_store, only: %i[ show edit update destroy theme_options ]
+  before_action :set_store, only: %i[ show edit update destroy ]
   rescue_from User::InvalidToken, with: :not_authorized
 
   # GET /stores or /stores.json
@@ -91,8 +91,14 @@ class StoresController < ApplicationController
         { value: 'green', label: 'Verde' },
         { value: 'yellow', label: 'Amarelo' },
         { value: 'purple', label: 'Roxo' },
-        { value: 'lilac', label: 'Lilás' },
-        { value: 'rose', label: 'Rosa' }
+        { value: 'brown', label: 'Marrom' },
+        { value: 'pink', label: 'Rosa' },
+        { value: 'orange', label: 'Laranja' },
+        { value: 'lightblue', label: 'Azul claro' },
+        { value: 'silver', label: 'Cinza' },
+        { value: 'lavender', label: 'Lavanda' }
+
+
       ]
     }
   end
@@ -109,10 +115,10 @@ class StoresController < ApplicationController
       if current_user.admin?
         required.permit(:name, :user_id, :image, :cnpj, 
         :phonenumber, :city, :cep, :state, :neighborhood, 
-        :address, :numberaddress, :establishment, :complementadress, :active)
+        :address, :numberaddress, :establishment, :complementadress, :active, :theme)
       else
         required.permit(:name, :image, :cnpj, :phonenumber, 
-        :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment, :complementadress, :active)
+        :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment, :complementadress, :active, :theme)
       end
     end
 

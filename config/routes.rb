@@ -12,13 +12,12 @@ Rails.application.routes.draw do
         put 'active_product', to: 'products#active_product'
       end
     end
-    
+  
     member do
       put 'active_store', to: 'stores#active_store'
-      get 'theme_options', to: 'stores#theme_options'
     end
   end
-end
+
 
   mount Rswag::Ui::Engine => "/api-docs", as: :api_ui_docs 
   mount Rswag::Api::Engine => "/api-docs",
@@ -37,6 +36,7 @@ end
   put "edit", to: "registrations#edit_user" 
   put "active", to: "registrations#active"
   get "show", to: "registrations#show"
+  get 'theme_options', to: 'stores#theme_options'
 
   post 'refresh', to: 'registrations#refresh'
 
