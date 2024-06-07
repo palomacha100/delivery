@@ -1,48 +1,19 @@
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.2.2
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+# Cria uma imagem a partir da imagem oficial do Ruby 3.2.2
+FROM registry.docker.com/library/ruby:3.2.2-slim
 
-# Rails app lives here
-WORKDIR /rails
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
-# Install packages needed to build gems
+# Atualiza o instalador de pacotes do Linux e instala as dependências necessárias
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips pkg-config
+    apt-get install --no-install-recommends -y build-essential git libvips pkg-config curl libsqlite3-0
 
-# Install application gems
-COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+# Instala a versão 2.5.5 do Bundler
+RUN gem install bundler -v 2.4.10
 
-# Copy application code
-COPY . .
+# Cria um diretório na imagem onde vão viver os arquidos da aplicação Rails
+WORKDIR /delivery
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
+# Copia todos os arquivos (atuais) da aplicação para a imagem
+COPY . /delivery
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Instala as dependências da aplicação
+RUN bundle install
 
-# Final stage for app image
-FROM base
-
-# Install runtime dependencies
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y libpq-dev
-
-# Copy built application
-COPY --from=build /rails /rails
-
-# Ensure the app directory is owned by the rails user
-RUN useradd -ms /bin/bash rails && chown -R rails:rails /rails
-USER rails
-
-# Expose Puma port
-EXPOSE 3000
-
-# Remove server.pid if it exists and start the main process
-CMD ["sh", "-c", "rm -f /rails/tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"]
