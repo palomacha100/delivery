@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   put "active", to: "registrations#active"
   get "show", to: "registrations#show"
   get 'theme_options', to: 'stores#theme_options'
+  put 'update_user', to: 'registrations#update_user'
 
   post 'refresh', to: 'registrations#refresh'
 

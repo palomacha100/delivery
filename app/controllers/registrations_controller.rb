@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
-  skip_forgery_protection only: [:create, :me, :sign_in, :refresh]
-  before_action :authenticate!, only: [:me ]
+  skip_forgery_protection only: [:destroy, :create, :me, :sign_in, :refresh, :show, :update_user]
+  before_action :authenticate!, only: [:me, :edit, :edit_user, :index, :active, :show]
   rescue_from User::InvalidToken, with: :not_authorized
  
   def me
@@ -20,7 +20,8 @@ class RegistrationsController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    current_user = authenticate_with_http_token { |token, options| User.from_token(token) }
+    @user = User.find(current_user[:id])
   end
  
    def create
@@ -58,13 +59,21 @@ class RegistrationsController < ApplicationController
    end
 
    def destroy
-    user = User.find(params[:id])
-      if user.discard!
-        redirect_to users_path, notice: 'User deactivate successfully.'
+    if current_user && current_user.admin?
+      user = User.find(params[:id])
+        if user.discard!
+          redirect_to users_path, notice: 'User deactivate successfully.'
+        else
+          flash[:alert] = 'User not deactivated.'
+          redirect_to users_path
+        end
       else
-        flash[:alert] = 'User not deactivated.'
-        redirect_to users_path
-      end
+        current_user = authenticate_with_http_token { |token, options| User.from_token(token) }
+        @user = User.find(current_user[:id])
+        if @user.discard!
+          render json: 'User deleted with success.' , status: :ok
+        end
+    end
   end
 
   def edit_user
@@ -84,6 +93,16 @@ class RegistrationsController < ApplicationController
     @user = User.new
   end
 
+  def update_user
+    current_user = authenticate_with_http_token { |token, options| User.from_token(token) }
+    @user = User.find(current_user[:id])
+    if @user.update(user_params)
+      render json: @user, status: :ok
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
   def refresh
     refresh_token = RefreshToken.find_by(refresh_token: params[:refresh_token])
     if refresh_token && refresh_token.expires_at > Time.current
@@ -101,7 +120,8 @@ class RegistrationsController < ApplicationController
    def user_params
      params
       .required(:user)
-      .permit(:email, :password, :password_confirmation)
+      .permit(:email, :password, :password_confirmation, :name, :cpf, :phonenumber, :cep, :state, 
+      :city, :neighborhood, :address, :numberaddress, :complementaddress)
    end
 
    def user_params_update

@@ -3,7 +3,7 @@ require 'dotenv/load'
 class User < ApplicationRecord
   include Discard::Model
   has_many :refresh_tokens
-
+  before_discard :anonymize_email
   validates :role, presence: true
   
   class InvalidToken < StandardError; end
@@ -40,6 +40,13 @@ class User < ApplicationRecord
     jwt_decode
   rescue JWT::ExpiredSignature
     raise InvalidToken.new
+  end
+
+  private
+
+  def anonymize_email
+    domain = email.split('@').last
+    self.email = "anon#{id}@#{domain}"
   end
   
 end
