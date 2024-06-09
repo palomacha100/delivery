@@ -97,14 +97,40 @@ class StoresController < ApplicationController
         { value: 'lightblue', label: 'Azul claro' },
         { value: 'silver', label: 'Cinza' },
         { value: 'lavender', label: 'Lavanda' }
-
-
       ]
     }
   end
 
+  def new_order
+    response.headers["Content-Type"] = "text/event-stream"
+    sse = SSE.new(response.stream, retry: 300, event: "waiting-orders")
+    last_orders = nil
+    begin
+      sse.write({ hello: "world!"}, event: "waiting-order")
+      EventMachine.run do
+        EventMachine::PeriodicTimer.new(3) do
+         orders = Order.where.not(state: [:canceled, :delivered, :payment_failed, :created, :payment_pending])
+        if orders != last_orders 
+          if orders.any?
+            message = { time: Time.now, orders: orders } 
+            sse.write(message, event: "new orders")
+          else
+            sse.write({ message: "no orders" }, event: "no")
+          end
+          last_orders = orders 
+        end
+        end
+      end
+   rescue IOError, ActionController::Live::ClientDisconnected
+     sse.close
+   ensure
+     sse.close
+   end
+  end
+
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+   
     def set_store
       @store = Store.find(params[:id])
     end

@@ -39,13 +39,10 @@ class Order < ApplicationRecord
         event :deliver do
             transition dispatched: :delivered
         end
-    
-        event :complete do
-            transition delivered: :completed
-        end
-    
+
         event :cancel do
-            transition [:created, :payment_pending, :payment_failed, :payment_confirmed, :sent_to_seller, :accepted, :preparing, :dispatched] => :canceled
+            transition [:created, :payment_pending, :payment_failed, :payment_confirmed, 
+            :sent_to_seller, :accepted, :preparing, :dispatched] => :canceled
         end
     end
     

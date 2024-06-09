@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :stores do
     resources :products do
+      get 'orders/new' => 'stores#new_order'
       member do
         put 'active_product', to: 'products#active_product'
       end
