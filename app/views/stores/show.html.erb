@@ -13,6 +13,21 @@
   <div class="global-container">
     <p style="color: green"><%= notice %></p>
     <h2><%= @store.name %></h2>
+    <p class="text-styled">Id: <%= @store.id %> </p>
+    <p class="text-styled">CNPJ: <%= @store.cnpj %></p>
+    <p class="text-styled">Tipo de estabelecimento: <%= @store.establishment %></p>
+    <p class="text-styled">Endereço: <%= @store.address %>, 
+      <%= @store.numberaddress %>, 
+      <%= @store.complementadress %>
+      <%= @store.neighborhood %>
+    </p>
+    <p class="text-styled">  <%= @store.cep %> - Cidade: <%= @store.city %> -  <%= @store.state %></p>
+    <p class="text-styled">Telefone: <%= @store.phonenumber %></p>
+    
+    <p class="text-styled">Criado em: <%= @store.created_at.strftime("%d/%m/%Y") %></p>
+    <p class="text-styled">Atualizado em: <%= @store.updated_at.strftime("%d/%m/%Y") %></p>
+ 
+
     <div class="inline-container">
       <%= link_to "Editar", edit_store_path(@store), class: 'small-green-button' %>
       <% if @store.discarded? %>

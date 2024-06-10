@@ -55,7 +55,6 @@ Rails.application.routes.draw do
         put 'prepare'
         put 'dispatch'
         put 'deliver'
-        put 'complete'
         put 'cancel'
       end
     end

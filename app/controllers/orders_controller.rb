@@ -1,13 +1,9 @@
 class OrdersController < ApplicationController
-    skip_forgery_protection only: [:create]
+    skip_forgery_protection only: [:create, :pay]
     before_action :authenticate!, :only_buyers!
-    before_action :set_order, only: [:show, :update, :destroy, 
-    :pay, :confirm_payment, :send_to_seller, :accept, :prepare, 
-    :dispatch, :deliver, :complete, :cancel]
-
+    
     def index
-        @orders = Order.where(buyer: current_user)
-        
+        @orders = Order.where(buyer: current_user)    
     end
 
     def create
@@ -20,9 +16,24 @@ class OrdersController < ApplicationController
         end
     end
 
+    def pay
+        order = Order.find(params[:id])
+        PaymentJob.perform_later(order: order, 
+        value: payment_params[:value],number: payment_params[:number],valid: payment_params[:valid],cvv: payment_params[:cvv])
+        render json: { message: 'Payment processing started' }, status: :ok
+      rescue StandardError => e
+        render json: { error: e.message }, status: :internal_server_error
+      end
+
     private
 
     def order_params
-        params.require(:order).permit(:store_id, order_items_attributes: [ :product_id, :amount, :price])
-      end
+        params.require(:order).permit(:store_id, order_items_attributes: 
+        [ :product_id, :amount, :price])
+    end
+
+    def payment_params
+        params.require(:payment).permit(:value, :number, :valid, :cvv)
+    end
+
 end
