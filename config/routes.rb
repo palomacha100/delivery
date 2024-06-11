@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         put 'send_to_seller'
         put 'accept'
         put 'prepare'
+        put 'ready'
         put 'dispatch'
         put 'deliver'
         put 'cancel'

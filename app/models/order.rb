@@ -31,6 +31,10 @@ class Order < ApplicationRecord
         event :prepare do
             transition accepted: :preparing
         end
+
+        event :ready do
+            transition preparing: :ready_to_dispatch
+        end
     
         event :dispatch do
             transition preparing: :dispatched
@@ -45,8 +49,6 @@ class Order < ApplicationRecord
             :sent_to_seller, :accepted, :preparing, :dispatched] => :canceled
         end
     end
-    
-
 
     private
 

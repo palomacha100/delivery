@@ -23,7 +23,43 @@ class OrdersController < ApplicationController
         render json: { message: 'Payment processing started' }, status: :ok
       rescue StandardError => e
         render json: { error: e.message }, status: :internal_server_error
-      end
+    end
+
+   def accept
+        @order = Order.find(params[:id])
+        @order.accept!
+        render json: { message: "Pedido aceito com sucesso", order: @order }, status: :ok
+    end
+
+    def prepare
+        @order = Order.find(params[:id])
+        @order.prepare!
+        render json: { message: "Pedido preparado com sucesso", order: @order }, status: :ok
+    end
+
+    def ready
+        @order = Order.find(params[:id])
+        @order.ready!
+        render json: { message: "Pedido pronto para envio", order: @order }, status: :ok
+    end
+
+    def dispatch
+        @order = Order.find(params[:id])
+        @order.dispatch!
+        render json: { message: "Pedido enviado com sucesso", order: @order }, status: :ok
+    end
+
+    def deliver
+        @order = Order.find(params[:id])
+        @order.deliver!
+        render json: { message: "Pedido entregue com sucesso", order: @order }, status: :ok
+    end
+
+    def cancel
+        @order = Order.find(params[:id])
+        @order.cancel!
+        render json: { message: "Pedido cancelado com sucesso", order: @order }, status: :ok
+    end
 
     private
 
