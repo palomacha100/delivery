@@ -7,12 +7,12 @@ Rails.application.routes.draw do
   }
 
   resources :stores do
-    resources :products do
+    resources :products
       get 'orders/new' => 'stores#new_order'
       member do
         put 'active_product', to: 'products#active_product'
       end
-    end
+  
   
     member do
       put 'active_store', to: 'stores#active_store'

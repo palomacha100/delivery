@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   enum :role, [:admin, :seller, :buyer]
   has_many :store
+  has_many :orders, foreign_key: 'buyer_id'
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

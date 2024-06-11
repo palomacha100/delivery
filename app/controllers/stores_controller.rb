@@ -1,4 +1,5 @@
 class StoresController < ApplicationController
+  include ActionController::Live
   skip_forgery_protection only: %i[create update destroy]
   before_action :authenticate!
   before_action :set_store, only: %i[ show edit update destroy ]
@@ -112,7 +113,24 @@ class StoresController < ApplicationController
          orders = Order.where.not(state: [:canceled, :delivered, :payment_failed, :created, :payment_pending])
         if orders != last_orders 
           if orders.any?
-            message = { time: Time.now, orders: orders } 
+            formatted_orders = orders.map do |order|
+              buyer = order.buyer
+
+              Rails.logger.info "Order: #{order.inspect}, Buyer: #{buyer.inspect}, Order Items: #{order.order_items.inspect}, Products: #{order.order_items.map(&:product).inspect}"
+              {
+                id: order.id,
+                customerName: order.buyer.name,
+                status: order.state,
+                items: order.order_items.map { |item| { id: item.id, name: item.product.title, price: item.price } },
+                total: format_price(order.order_items.sum { |item| item.price * item.amount }),
+                address: "#{order.buyer.address}, #{order.buyer.numberaddress}",
+                neighborhood: order.buyer.neighborhood,
+                city: order.buyer.city,
+                cep: order.buyer.cep,
+                expanded: false
+              }
+            end
+            message = { time: Time.now, orders: formatted_orders }
             sse.write(message, event: "new orders")
           else
             sse.write({ message: "no orders" }, event: "no")
@@ -150,5 +168,9 @@ class StoresController < ApplicationController
 
     def not_authorized(e)
       render json: {message: "Nope!"}, status: 401
+    end
+
+    def format_price(price)
+      ActionController::Base.helpers.number_to_currency(price)
     end
 end

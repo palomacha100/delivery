@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-    belongs_to :buyer, class_name: "User"
+    belongs_to :buyer, class_name: 'User', foreign_key: 'buyer_id'
     belongs_to :store
     has_many :order_items
     has_many :products, through: :order_items
