@@ -10,7 +10,7 @@ class StoresController < ApplicationController
     if current_user.admin?
       @stores = Store.all
     elsif current_user.buyer?
-      @stores = Store.kept.includes(image_attachment: :blob)
+      @stores = Store.kept.where(active: true).includes(image_attachment: :blob)
     else 
       @stores = Store.kept.where(user: current_user).includes(image_attachment: :blob)
     end
