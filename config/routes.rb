@@ -17,12 +17,22 @@ Rails.application.routes.draw do
     member do
       put 'active_store', to: 'stores#active_store'
     end
+
+    resources :orders, only: [:index] do
+      member do
+        put 'accept'
+        put 'prepare'
+        put 'ready'
+        put 'dispatched'
+        put 'deliver'
+        put 'cancel'
+      end
+    end
   end
 
 
   mount Rswag::Ui::Engine => "/api-docs", as: :api_ui_docs 
-  mount Rswag::Api::Engine => "/api-docs",
-  as: :api_docs 
+  mount Rswag::Api::Engine => "/api-docs", as: :api_docs 
   get "listing" => "products#listing"
 
   post "new" => "registrations#create", as: :create_registration
@@ -51,11 +61,6 @@ Rails.application.routes.draw do
         put 'payment_confirmed'
         put 'payment_failed'
         put 'send_to_seller'
-        put 'accept'
-        put 'prepare'
-        put 'ready'
-        put 'dispatch'
-        put 'deliver'
         put 'cancel'
       end
     end
