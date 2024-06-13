@@ -24,12 +24,8 @@ class Order < ApplicationRecord
         transition payment_confirmed: :accepted
       end
   
-      event :prepare do
-        transition accepted: :preparing
-      end
-  
       event :ready do
-        transition preparing: :ready_to_dispatch
+        transition accepted: :ready_to_dispatch
       end
   
       event :dispatch do

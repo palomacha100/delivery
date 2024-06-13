@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
-    skip_forgery_protection only: [:create, :pay, :accept, :prepare, :ready, :deliver, :cancel]
+    skip_forgery_protection only: [:create, :pay, :accept, :ready, :deliver, :dispatched, :cancel]
     before_action :authenticate! 
-    before_action :only_buyers!, except: [:index, :pay, :accept, :prepare, :ready, :deliver, :cancel]
+    before_action :only_buyers!, except: [:index, :pay, :accept, :ready, :deliver, :dispatched, :cancel]
   
     def dispatched
       @order = Order.find(params[:id])
@@ -46,15 +46,6 @@ class OrdersController < ApplicationController
       render json: { error: e.message }, status: :internal_server_error
     end
   
-    def prepare
-      @order = Order.find(params[:id])
-      @order.prepare!
-      render json: { message: "Pedido preparado com sucesso", order: @order }, status: :ok
-    rescue StandardError => e
-      logger.error "Error preparing order: #{e.message}"
-      render json: { error: e.message }, status: :internal_server_error
-    end
-  
     def ready
       @order = Order.find(params[:id])
       @order.ready!
@@ -63,8 +54,6 @@ class OrdersController < ApplicationController
       logger.error "Error setting order as ready: #{e.message}"
       render json: { error: e.message }, status: :internal_server_error
     end
-  
-
   
     def deliver
       @order = Order.find(params[:id])
