@@ -22,10 +22,22 @@ body {
   .global-container {
     display: flex;
     flex-direction: column;
-    width: 98%;
+    width: 100%;
     justify-content: center;
     margin: auto;
-    margin:10px;
+  }
+
+  .image-container {
+    width: 50vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 
   .header-container {
@@ -267,6 +279,13 @@ h2 {
 
 a {
   text-decoration: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  
+
 }
 
 .inline-container {

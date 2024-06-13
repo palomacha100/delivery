@@ -52,9 +52,14 @@ Rails.application.routes.draw do
 
   post 'refresh', to: 'registrations#refresh'
 
+  scope :admin do
+    resources :orders, only: [:index, :show, :update, :destroy]
+  end
+
   scope :buyers do
     resources :orders, only: [:index, :create, :update, :destroy] do
       member do
+        get 'pay'
         put 'pay'
         put 'payment_pending'
         put 'confirm_payment'

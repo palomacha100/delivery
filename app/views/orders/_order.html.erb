@@ -1,0 +1,33 @@
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="global-container">
+      <h2><%= order.id %></h2>
+        <p class="text-styled">Status: <%= order.state %></p>
+        <p class="text-styled">Comprador: <%= order.buyer.name %></p>
+        <p class="text-styled">Loja: <%= order.store.name %></p>
+
+      
+        <p class="text-styled">Data: <%= order.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+        <p class="text-styled">Itens:</p>
+
+        <ul>
+          <% order_items.each do |order_item| %>
+            <li>
+              <p class="text-styled">Produto: <%= order_item.product.title %></p>
+              <p class="text-styled">Quantidade: <%= order_item.amount %></p>
+              <p class="text-styled">Preço: R$ <%= order_item.price %></p>
+            </li>
+          <% end %>
+          <p class="text-styled">Total: R$ <%= order_items.sum {|item| item.price * item.amount} %></p>
+        </ul>
+</div>

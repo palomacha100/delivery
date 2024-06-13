@@ -1,0 +1,27 @@
+<div class="card-two">
+    <p class="notice"><%= notice %></p>
+
+    <%= render 'order', order: @order, store: @store, buyer: @buyer, order_items: @order_items %>
+
+    <div class="father-user-links">
+        <div class="inline-container">
+        <% if @order.state == 'created' %>
+            <%= link_to "Pagar", pay_order_path(@order), method: :put, class: "small-green-button" %>
+            <% elsif @order.state == 'payment_confirmed' %>
+                <%= button_to "Aceitar pedido", accept_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+            <% elsif @order.state == 'payment_failed' %>
+                <%= button_to "Pagar", pay_order_path(@order), method: :put, class: "small-green-button" %>
+            <% elsif @order.state == 'accepted' %>
+                <%= button_to "Pedido pronto", ready_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+            <% elsif @order.state == 'ready_to_dispatch' %>
+                <%= button_to "Entregar para motorista", dispatched_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+            <% elsif @order.state == 'dispatched' %>
+                <%= button_to "Finalizar", deliver_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+            <% elsif @order.state == 'delivered' %>
+                <p>Pedido finalizado</p>
+            <% elsif @order.state == 'canceled' %>
+                <p>Pedido cancelado</p>
+            <% end %>
+        </div>
+    </div>
+</div>
