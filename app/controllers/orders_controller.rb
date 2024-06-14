@@ -42,6 +42,16 @@ class OrdersController < ApplicationController
         if request.get? && current_user.admin?
           @order = Order.find(params[:id])
           render :pay
+        elsif request.put? && current_user.admin?
+          order = Order.find(params[:id])
+          PaymentJob.perform_later(
+            order: order,
+            value: payment_params[:value],
+            number: payment_params[:number],
+            valid: payment_params[:valid],
+            cvv: payment_params[:cvv]
+          )
+          redirect_to orders_path
         else
           order = Order.find(params[:id])
           PaymentJob.perform_later(
