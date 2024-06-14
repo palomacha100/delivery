@@ -12,7 +12,7 @@
 <main>
   <div class="global-container">
     <h1 class="title-styled">Gerenciamento de pedidos</h1>
-  
+    <%= link_to "Novo pedido", orders_new_path, class: 'small-blue-button' %>
   <div>
     <% @orders.each do |order| %>
       <div class="big-column-start-container">

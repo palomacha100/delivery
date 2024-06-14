@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   post 'refresh', to: 'registrations#refresh'
 
   scope :admin do
+    get 'orders/new' => 'orders#new'
+    post 'orders', to: 'orders#create'
     resources :orders, only: [:index, :show, :update, :destroy]
   end
 

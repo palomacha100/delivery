@@ -55,7 +55,13 @@ class RegistrationsController < ApplicationController
    end
 
    def index
-    @users = User.all
+    if params[:query].present?
+      @users = User.where(role: :buyer).where("email LIKE ?", "%#{params[:query]}%")
+      render json: @users
+    else
+      @users = User.all
+    end
+    
    end
 
    def destroy

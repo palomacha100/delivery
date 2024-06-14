@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
-    skip_forgery_protection only: [:create, :pay, :accept, :ready, :deliver, :dispatched, :cancel]
+    skip_forgery_protection only: [:create, :pay, :accept, :ready, :deliver, :dispatched, :cancel, :new]
     before_action :authenticate! 
-    before_action :only_buyers!, except: [:index, :pay, :accept, :ready, :deliver, :dispatched, :cancel, :show]
+    before_action :only_buyers!, except: [:index, :pay, :accept, :ready, :deliver, :dispatched, :cancel, :show, :new, :create]
   
     def show
       @order = Order.find(params[:id])
@@ -29,13 +29,22 @@ class OrdersController < ApplicationController
     end
   
     def create
-      @order = Order.new(order_params) { |o| o.buyer = current_user }
+      filtered_order_items_attributes = order_params[:order_items_attributes].reject { |item| item[:product_id].blank? }
+      @order = Order.new(order_params.except(:order_items_attributes).merge(order_items_attributes: filtered_order_items_attributes))
+      @order.buyer_id = params[:buyer_id]
       if @order.save
-        render :create, status: :created
+        redirect_to order_path(@order)
       else
-        render json: { errors: @order.errors, status: :unprocessable_entity }
+        @stores = Store.where(active: true)
+        render :new
       end
     end
+
+    def new
+      @order = Order.new
+      @order.order_items.build
+    end
+
   
     def pay
       begin
@@ -123,7 +132,7 @@ class OrdersController < ApplicationController
     private
   
     def order_params
-      params.require(:order).permit(:store_id, order_items_attributes: [:product_id, :amount, :price])
+      params.require(:order).permit(:store_id, :buyer_id, order_items_attributes: [:product_id, :amount, :price])
     end
   
     def payment_params
