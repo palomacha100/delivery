@@ -284,8 +284,6 @@ a {
 .container {
   display: flex;
   flex-direction: row;
-  
-
 }
 
 .inline-container {

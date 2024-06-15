@@ -6,21 +6,25 @@
     <div class="father-user-links">
         <div class="inline-container">
         <% if @order.state == 'created' %>
-            <%= link_to "Pagar", pay_order_path(@order), method: :put, class: "small-green-button" %>
+            <%= link_to "Pagar", pay_order_path(@order), method: :put, class: "medium-green-button" %>
             <% elsif @order.state == 'payment_confirmed' %>
-                <%= button_to "Aceitar pedido", accept_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+                <%= button_to "Aceitar pedido", accept_store_order_path(@store, @order), method: :put, class: "medium-green-button" %>
+                <%= button_to "Rejeitar pedido", cancel_order_path(@store, @order), method: :put, class: "medium-red-button" %>
             <% elsif @order.state == 'payment_failed' %>
-                <%= button_to "Pagar", pay_order_path(@order), method: :put, class: "small-green-button" %>
+                <%= button_to "Pagar", pay_order_path(@order), method: :put, class: "medium-green-button" %>
+                <%= button_to "Cancelar pedido", cancel_order_path(@store, @order), method: :put, class: "medium-red-button" %>
             <% elsif @order.state == 'accepted' %>
-                <%= button_to "Pedido pronto", ready_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+                <%= button_to "Pedido pronto", ready_store_order_path(@store, @order), method: :put, class: "medium-green-button" %>
+                <%= button_to "Cancelar pedido", cancel_order_path(@store, @order), method: :put, class: "medium-red-button" %>
             <% elsif @order.state == 'ready_to_dispatch' %>
-                <%= button_to "Entregar para motorista", dispatched_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+                <%= button_to "Entregar para motorista", dispatched_store_order_path(@store, @order), method: :put, class: "medium-green-button" %>
+                <%= button_to "Cancelar pedido", cancel_order_path(@store, @order), method: :put, class: "medium-red-button" %>
             <% elsif @order.state == 'dispatched' %>
-                <%= button_to "Finalizar", deliver_store_order_path(@store, @order), method: :put, class: "small-green-button" %>
+                <%= button_to "Finalizar", deliver_store_order_path(@store, @order), method: :put, class: "medium-green-button" %>
             <% elsif @order.state == 'delivered' %>
-                <p>Pedido finalizado</p>
+                <p class="text-styled">Pedido finalizado</p>
             <% elsif @order.state == 'canceled' %>
-                <p>Pedido cancelado</p>
+                <p class="text-styled">Pedido cancelado</p>
             <% end %>
         </div>
     </div>

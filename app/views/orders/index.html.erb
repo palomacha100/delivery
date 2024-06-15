@@ -12,16 +12,18 @@
 <main>
   <div class="global-container">
     <h1 class="title-styled">Gerenciamento de pedidos</h1>
-    <%= link_to "Novo pedido", orders_new_path, class: 'small-blue-button' %>
-  <div>
-    <% @orders.each do |order| %>
+    <div class="inline-container">
+      <%= link_to "Novo pedido", orders_new_path, class: 'medium-blue-button' %>
+    </div>
+    <div>
+      <% @orders.each do |order| %>
       <div class="big-column-start-container">
         <h2><%= order.id %></h2>
         <p class="text-styled">Status: <%= order.state %></p> 
         <%= link_to "Ver pedido", order_path(order), class: 'small-green-button' %> 
       </div>
       <hr/>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
   </div>
 </main>
