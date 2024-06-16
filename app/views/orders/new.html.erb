@@ -2,7 +2,7 @@
   <div class="field">
     <%= label_tag :buyer_id, "Buscar Comprador" %>
     <%= text_field_tag :buyer_id, params[:buyer_id], class: 'form-control', placeholder: "Digite o ID do comprador" %>
-      <div id="buyers_results"></div>
+    <div id="buyers_results"></div>
   </div>
 
   <div class="field">
@@ -41,6 +41,7 @@
             item.addEventListener('click', function() {
               const buyerId = this.getAttribute('data-id');
               orderBuyerId.value = buyerId;
+              buyersResults.innerHTML = ''; // Clear the results after selection
             });
           });
         });
@@ -55,19 +56,44 @@
             item.addEventListener('click', function() {
               const storeId = this.getAttribute('data-id');
               orderStoreId.value = storeId;
+              storeResults.innerHTML = ''; // Clear the results after selection
               fetch(`/stores/${storeId}/products`)
                 .then(response => response.json())
                 .then(products => {
-                  console.log(products);
                   productList.innerHTML = products.data.map(product => `
                     <div>
-                      <input type="checkbox" id="product_${product.id}" name="order[order_items_attributes][][product_id]" value="${product.id}">
-                      <label for="product_${product.id}" name="order[order_items_attributes][][price]">${product.title} - ${product.price}</label>
-                      <input type="number" name="order[order_items_attributes][][amount]" min="1" placeholder="Quantidade">
-                      <input type="hidden" name="order[order_items_attributes][][price]" value="${product.price}">
+                      <input type="checkbox" id="product_${product.id}" value="${product.id}" data-price="${product.price}" class="product-checkbox">
+                      <label for="product_${product.id}">${product.title} - ${product.price}</label>
+                      <input type="number" name="order[order_items_attributes][][amount]" min="1" placeholder="Quantidade" class="product-amount" style="display:none;">
+                      <input type="hidden" name="order[order_items_attributes][][product_id]" value="${product.id}" class="product-id" style="display:none;">
+                      <input type="hidden" name="order[order_items_attributes][][price]" value="${product.price}" class="product-price" style="display:none;">
                     </div>
                   `).join('');
                   productSelection.style.display = 'block';
+
+                  document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                      const amountInput = this.nextElementSibling.nextElementSibling; // Get the amount input
+                      const productIdInput = amountInput.nextElementSibling;
+                      const productPriceInput = productIdInput.nextElementSibling;
+                      if (this.checked) {
+                        amountInput.style.display = 'block';
+                        amountInput.name = "order[order_items_attributes][][amount]";
+                        productIdInput.style.display = 'block';
+                        productIdInput.name = "order[order_items_attributes][][product_id]";
+                        productPriceInput.style.display = 'block';
+                        productPriceInput.name = "order[order_items_attributes][][price]";
+                      } else {
+                        amountInput.style.display = 'none';
+                        amountInput.removeAttribute('name');
+                        amountInput.value = '';
+                        productIdInput.style.display = 'none';
+                        productIdInput.removeAttribute('name');
+                        productPriceInput.style.display = 'none';
+                        productPriceInput.removeAttribute('name');
+                      }
+                    });
+                  });
                 });
             });
           });
@@ -75,3 +101,4 @@
     });
   });
 </script>
+

@@ -1,8 +1,10 @@
 class OrdersController < ApplicationController
-    skip_forgery_protection only: [:create, :pay, :accept, :ready, :deliver, :dispatched, :cancel, :new]
+    skip_forgery_protection only: [:create, :pay, :accept, :ready, :deliver, :dispatched, 
+      :cancel, :new]
     before_action :authenticate! 
-    before_action :only_buyers!, except: [:index, :pay, :accept, :ready, :deliver, :dispatched, :cancel, :show, :new, :create]
-  
+    before_action :only_buyers!, except: [:index, :pay, :accept, :ready, :deliver, 
+      :dispatched, :cancel, :show, :new, :create]
+
     def show
       @order = Order.find(params[:id])
       @store = @order.store
@@ -29,14 +31,13 @@ class OrdersController < ApplicationController
     end
   
     def create
-      filtered_order_items_attributes = order_params[:order_items_attributes].reject { |item| item[:product_id].blank? }
+      filtered_order_items_attributes = order_params[:order_items_attributes].reject { |item| item[:product_id].blank? || item[:amount].blank? }
       @order = Order.new(order_params.except(:order_items_attributes).merge(order_items_attributes: filtered_order_items_attributes))
       @order.buyer_id = params[:buyer_id]
       if @order.save
         redirect_to order_path(@order)
       else
-        @stores = Store.where(active: true)
-        render :new
+        render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
       end
     end
 

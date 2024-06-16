@@ -90,5 +90,4 @@ gem "sidekiq", "~> 7.2"
 
 gem 'mini_magick', '~> 4.11'
 
-
 gem "eventmachine", "~> 1.2"

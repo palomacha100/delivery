@@ -12,15 +12,15 @@ class ProductsController < ApplicationController
         if buyer?
           page = params.fetch(:page, 1)
           @products = Product.includes(:image_attachment).
-          where(store_id: params[:store_id]).
-          order(:title)
-          @products = @products.page(page)
-        else 
-          products = @store.products.all.map do |product|
+                              where(store_id: params[:store_id]).
+                              order(:title).
+                              page(page)
+        else
+          @store = Store.find(params[:store_id])
+          products = @store.products.map do |product|
             product_attributes = product.attributes
             product_attributes[:image_url] = url_for(product.image) if product.image.attached?
             product_attributes
-         
           end
           render json: { data: products }, status: :ok
         end
