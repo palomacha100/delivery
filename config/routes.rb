@@ -76,4 +76,6 @@ Rails.application.routes.draw do
   root to: "welcome#index"
   get "up" => "rails/health#show", as: :rails_health_check
 
+  get 'analysis/anacor', to: 'analysis#anacor'
+
 end
