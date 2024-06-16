@@ -20,8 +20,12 @@ class RegistrationsController < ApplicationController
   end
 
   def show
+    if current_user && current_user.admin?
+      @user = User.find(params[:id])
+    else
     current_user = authenticate_with_http_token { |token, options| User.from_token(token) }
     @user = User.find(current_user[:id])
+    end
   end
  
    def create
@@ -55,7 +59,13 @@ class RegistrationsController < ApplicationController
    end
 
    def index
-    @users = User.all
+    if params[:query].present?
+      @users = User.where(role: :buyer).where("email LIKE ?", "%#{params[:query]}%")
+      render json: @users
+    else
+      @users = User.all
+    end
+    
    end
 
    def destroy

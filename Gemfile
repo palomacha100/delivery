@@ -59,12 +59,9 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "bullet"
+  gem 'rinruby', '~> 2.0.3'
+  gem 'matrix'
 
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler"
-
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
 end
 
 
@@ -89,6 +86,5 @@ gem "faraday", "~> 2.9"
 gem "sidekiq", "~> 7.2"
 
 gem 'mini_magick', '~> 4.11'
-
 
 gem "eventmachine", "~> 1.2"

@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   post 'refresh', to: 'registrations#refresh'
 
   scope :admin do
+    get 'orders/new' => 'orders#new'
+    post 'orders', to: 'orders#create'
     resources :orders, only: [:index, :show, :update, :destroy]
   end
 
@@ -73,5 +75,7 @@ Rails.application.routes.draw do
 
   root to: "welcome#index"
   get "up" => "rails/health#show", as: :rails_health_check
+
+  get 'analysis/anacor', to: 'analysis#anacor'
 
 end

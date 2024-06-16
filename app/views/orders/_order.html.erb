@@ -11,23 +11,23 @@
 </header>
 <main>
   <div class="global-container">
+    <div class="big-column-start-container">
       <h2><%= order.id %></h2>
-        <p class="text-styled">Status: <%= order.state %></p>
-        <p class="text-styled">Comprador: <%= order.buyer.name %></p>
-        <p class="text-styled">Loja: <%= order.store.name %></p>
-
-      
-        <p class="text-styled">Data: <%= order.created_at.strftime("%d/%m/%Y %H:%M") %></p>
-        <p class="text-styled">Itens:</p>
-
-        <ul>
-          <% order_items.each do |order_item| %>
-            <li>
-              <p class="text-styled">Produto: <%= order_item.product.title %></p>
-              <p class="text-styled">Quantidade: <%= order_item.amount %></p>
-              <p class="text-styled">Preço: R$ <%= order_item.price %></p>
-            </li>
-          <% end %>
-          <p class="text-styled">Total: R$ <%= order_items.sum {|item| item.price * item.amount} %></p>
-        </ul>
+      <p class="text-styled">Status: <%= order.state %></p>
+      <p class="text-styled">Comprador: <%= order.buyer.name %></p>
+      <p class="text-styled">Loja: <%= order.store.name %></p>
+      <p class="text-styled">Data: <%= order.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+      </br>
+      <p class="text-styled"><strong>Itens:</strong></p>
+      <ul>
+        <% order_items.each do |order_item| %>
+          <li>
+            <p class="text-styled">Produto: <%= order_item.product.title %></p>
+            <p class="text-styled">Quantidade: <%= order_item.amount %></p>
+            <p class="text-styled">Preço: R$ <%= order_item.price %></p>
+          </li>
+        <% end %>
+        <p class="text-styled"><strong>Total: R$ <%= order_items.sum {|item| item.price * item.amount} %></strong></p>
+      </ul>
+    </div>
 </div>

@@ -1,0 +1,46 @@
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="global-container">
+    <h1 class="title-styled">Pagamento do pedido</h1>
+    <%= form_with(url: pay_order_path(@order), method: :put, local: true) do |form| %>
+      <div class="field">
+        <%= form.label 'payment[value]', 'Valor Total' %>
+        <% total_value = @order.order_items.sum { |item| item.price * item.amount } %>
+        <%= form.text_field 'payment[value]', value: total_value, class: 'form-control', readonly: true %>
+        <%= form.hidden_field 'payment[value]', value: total_value %>
+      </div>
+
+      <div class="field">
+        <%= form.label 'payment[number]', 'Número do cartão' %><br />
+        <%= form.text_field 'payment[number]', class: 'form-control' %>
+      </div>
+
+ 
+
+      <div class="field">
+        <%= form.label 'payment[valid]', 'Data de expiração' %><br />
+        <%= form.text_field 'payment[valid]', class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= form.label 'payment[cvv]', 'Número do CVV' %><br />
+        <%= form.text_field 'payment[cvv]', class: 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit "Pagar", class: 'medium-blue-button' %>
+      </div>
+    <% end %>
+  </div>
+</main>
