@@ -67,8 +67,8 @@ class AnalysisController < ApplicationController
       # Gerando o heatmap
       p <- ggplot(data = melt(table_matrix), aes(x = Var2, y = Var1, fill = value)) +
         geom_tile() +
-        scale_fill_gradient(low = "#a4a4a8", high = "#2c5c8f") +
-        scale_fill_gradient(low = "#a4a4a8", high = "#2c5c8f", guide = guide_colorbar(barwidth = 0.5, barheight = 3, label.theme = element_text(size = 9, family = "poppins"))) +
+        scale_fill_gradient(low = "#DCDCDC", high = "#2c5c8f") +
+        scale_fill_gradient(low = "#DCDCDC", high = "#2c5c8f", guide = guide_colorbar(barwidth = 0.5, barheight = 3, label.theme = element_text(size = 9, family = "poppins"))) +
         labs(title = "Heatmap de Vendas por Produto e Dia da Semana",
              x = "Dia da Semana",
              y = "Produto",
@@ -102,7 +102,7 @@ class AnalysisController < ApplicationController
     # Formatando os dados para resposta JSON
     result = coord_df.map { |row| { product: row['Product'], coordinates: { Dim1: row['Dim1'], Dim2: row['Dim2'] } } }
 
-    render json: { result: result, plot_image: '/tmp/anacor_plot.png' }
+    render json: { result: result, plot_image: '/anacor_plot.png' }
   end
 end
 
