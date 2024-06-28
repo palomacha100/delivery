@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
       :dispatched, :cancel, :show, :new, :create]
 
     def show
-      @order = Order.find(params[:id])
+      @order = Order.includes(order_items: :product).find(params[:id])
       @store = @order.store
       @buyer = @order.buyer
       @order_items = @order.order_items

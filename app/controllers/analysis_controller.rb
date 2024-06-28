@@ -68,9 +68,10 @@ class AnalysisController < ApplicationController
       p <- ggplot(data = melt(table_matrix), aes(x = Var2, y = Var1, fill = value)) +
         geom_tile() +
         scale_fill_gradient(low = "#DCDCDC", high = "#2c5c8f") +
-        scale_fill_gradient(low = "#DCDCDC", high = "#2c5c8f", guide = guide_colorbar(barwidth = 0.5, barheight = 3, label.theme = element_text(size = 9, family = "poppins"))) +
-        labs(title = "Heatmap de Vendas por Produto e Dia da Semana",
-             x = "Dia da Semana",
+        scale_fill_gradient(low = "#DCDCDC", high = "#2c5c8f", 
+        guide = guide_colorbar(barwidth = 0.5, barheight = 3, 
+        label.theme = element_text(size = 9, family = "poppins"))) +
+        labs(x = "Dia da Semana",
              y = "Produto",
              fill = "Vendas") +
         theme_minimal() +
@@ -83,7 +84,7 @@ class AnalysisController < ApplicationController
           legend.text = element_text(family = "poppins", size = 12, color = "#48484d"),
           legend.title = element_text(family = "poppins", size = 12, color = "#48484d"),
           panel.background = element_rect(fill = "#fff", color = NA), # Alterando a cor de fundo do mapa
-          plot.background = element_rect(fill = "#fff", color = NA), # Alterando a cor de fundo do gráfico
+          plot.background = element_rect(fill = "transparent", color = NA), # Alterando a cor de fundo do gráfico
           legend.background = element_rect(fill = "#fff", color = NA) # Alterando a cor de fundo da legenda
         )
 
