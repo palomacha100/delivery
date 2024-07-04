@@ -1,45 +1,63 @@
-<%= form_with(model: @order, local: true) do |f| %>
-  <div class="field">
-    <%= label_tag :buyer_id, "Buscar Comprador" %>
-    <%= text_field_tag :buyer_id, params[:buyer_id], class: 'form-control', placeholder: "Digite o ID do comprador" %>
-    <div id="buyers_results"></div>
+<header>
+  <div class="header-container">
+    <div>
+      <%= link_to "Início", root_path, class: 'small-blue-button' %>
+    </div>
+    <div class="header-inline">
+      <p class="text-styled">Logged in as <strong><%= current_user.email %></strong></p>
+      <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "small-red-button" %>
+    </div>
   </div>
+</header>
+<main>
+  <div class="global-container">
+    <%= form_with(model: @order, local: true) do |f| %>
+      <div class="field">
+        <%= label_tag :buyer_id, "Buscar Comprador" %>
+        <%= text_field_tag :buyer_email, params[:buyer_email], class: 'form-control', placeholder: "Digite o email do comprador" %>
+        <%= hidden_field_tag "order[buyer_id]", nil, id: 'order_buyer_id' %>
+        <div id="buyers_results"></div>
+      </div>
+      <div class="field">
+        <%= label_tag :store_id, "Buscar Loja" %>
+        <%= text_field_tag :store_search, nil, class: 'form-control', placeholder: "Digite o nome da loja", id: 'store_search' %>
+        <div id="store_results"></div>
+        <%= hidden_field_tag "order[store_id]", nil, id: 'order_store_id' %>
+      </div>
 
-  <div class="field">
-    <%= label_tag :store_id, "Buscar Loja" %>
-    <%= text_field_tag :store_search, nil, class: 'form-control', placeholder: "Digite o nome da loja", id: 'store_search' %>
-    <div id="store_results"></div>
-    <%= hidden_field_tag "order[store_id]", nil, id: 'order_store_id' %>
-  </div>
+      <div id="product_selection" style="display: none;">
+        <h3>Produtos</h3>
+        <div id="product_list"></div>
+      </div>
 
-  <div id="product_selection" style="display: none;">
-    <h3>Produtos</h3>
-    <div id="product_list"></div>
+      <div class="actions">
+        <%= f.submit "Criar Pedido", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Criar Pedido", class: "btn btn-primary" %>
-  </div>
-<% end %>
+</main>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    const buyerEmail = document.getElementById('buyer_email');
+    const orderBuyerId = document.getElementById('order_buyer_id');
+    const buyersResults = document.getElementById('buyers_results');
     const storeSearch = document.getElementById('store_search');
     const storeResults = document.getElementById('store_results');
     const productSelection = document.getElementById('product_selection');
     const productList = document.getElementById('product_list');
     const orderStoreId = document.getElementById('order_store_id');
-    const orderBuyerId = document.getElementById('buyer_id');
-    const buyersResults = document.getElementById('buyers_results');
 
-    orderBuyerId.addEventListener('input', function() {
+    buyerEmail.addEventListener('input', function() {
       fetch(`/users?query=${this.value}`)
         .then(response => response.json())
         .then(data => {
-          buyersResults.innerHTML = data.map(buyer => `<div class="buyer-result" data-id="${buyer.id}">${buyer.email}</div>`).join('');
+          buyersResults.innerHTML = data.map(buyer => `<div class="buyer-result" data-id="${buyer.id}" data-email="${buyer.email}">${buyer.email}</div>`).join('');
           document.querySelectorAll('.buyer-result').forEach(item => {
             item.addEventListener('click', function() {
               const buyerId = this.getAttribute('data-id');
+              const buyerEmailValue = this.getAttribute('data-email');
+              document.getElementById('buyer_email').value = buyerEmailValue;
               orderBuyerId.value = buyerId;
               buyersResults.innerHTML = ''; // Clear the results after selection
             });
@@ -101,4 +119,5 @@
     });
   });
 </script>
+
 
