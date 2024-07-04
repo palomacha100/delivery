@@ -17,7 +17,7 @@ class ProductsController < ApplicationController
                               page(page)
         else
           @store = Store.find(params[:store_id])
-          products = @store.products.map do |product|
+          products = @store.products.includes(:image_attachment).map do |product|
             product_attributes = product.attributes
             product_attributes[:image_url] = url_for(product.image) if product.image.attached?
             product_attributes
