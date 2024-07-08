@@ -23,12 +23,29 @@ class OrdersController < ApplicationController
     end
 
     def index
-      if current_user.admin?
-        @orders = Order.all
-      else
-        @orders = Order.where(buyer: current_user)
+      respond_to do |format|
+        format.html do
+          if current_user.admin?
+            page = params.fetch(:page, 1)
+            @orders = Order.order(:created_at).page(page)
+          else
+            @orders = Order.where(buyer: current_user).order(:created_at).page(page)
+          end
+        end
+        format.json do
+          if current_user.admin?
+            page = params.fetch(:page, 1)
+            @orders = Order.includes(:store, :buyer).order(:created_at).page(page)
+          else
+            @orders = Order.where(buyer: current_user).order(:created_at).page(page)
+          end
+          render json: @orders
+        end
       end
     end
+    
+
+    
   
     def create
       filtered_order_items_attributes = order_params[:order_items_attributes].reject { |item| item[:product_id].blank? || item[:amount].blank? }
