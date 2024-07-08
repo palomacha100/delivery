@@ -204,6 +204,7 @@ body {
   border-radius: 5px;
   font-size: 1rem;
   font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
 }
 
 .field {
@@ -291,7 +292,7 @@ a {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 4rem;
+  min-height: 4rem;
   gap: 10px;
 }
 
@@ -309,5 +310,20 @@ a {
   flex-direction: column;
   align-items: center;
   height: auto;
+}
+
+.results-list {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  background: white;
+}
+.results-list div {
+  padding: 5px;
+  cursor: pointer;
+}
+.results-list div:hover {
+  background: #f0f0f0;
 }
  

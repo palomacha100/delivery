@@ -45,7 +45,7 @@ class Order < ApplicationRecord
     private
   
     def buyer_role
-      if !buyer.buyer?
+      if buyer.nil? || !buyer.buyer?
         errors.add(:buyer, "should be a `user.buyer`")
       end
     end

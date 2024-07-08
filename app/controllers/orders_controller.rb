@@ -33,10 +33,17 @@ class OrdersController < ApplicationController
     def create
       filtered_order_items_attributes = order_params[:order_items_attributes].reject { |item| item[:product_id].blank? || item[:amount].blank? }
       @order = Order.new(order_params.except(:order_items_attributes).merge(order_items_attributes: filtered_order_items_attributes))
-      @order.buyer_id = params[:buyer_id]
+      @order.buyer_id = params[:order][:buyer_id]
+
+      Rails.logger.debug "Order Params: #{order_params.inspect}"
+      Rails.logger.debug "Filtered Order Items: #{filtered_order_items_attributes.inspect}"
+      Rails.logger.debug "Order: #{@order.inspect}"
+      Rails.logger.debug "Buyer ID: #{params[:order][:buyer_id]}"
       if @order.save
+        Rails.logger.debug "Order Errors: #{@order.errors.full_messages.inspect}"
         redirect_to order_path(@order)
       else
+        Rails.logger.debug "Order Errors2: #{@order.errors.full_messages.inspect}"
         render json: { errors: @order.errors.full_messages }, status: :unprocessable_entity
       end
     end

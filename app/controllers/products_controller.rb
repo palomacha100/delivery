@@ -11,13 +11,13 @@ class ProductsController < ApplicationController
       format.json do
         if buyer?
           page = params.fetch(:page, 1)
-          @products = Product.includes(:image_attachment).
+          @products = Product.includes(image_attachment: :blob).
                               where(store_id: params[:store_id]).
                               order(:title).
                               page(page)
         else
           @store = Store.find(params[:store_id])
-          products = @store.products.includes(:image_attachment).map do |product|
+          products = @store.products.includes(image_attachment: :blob).map do |product|
             product_attributes = product.attributes
             product_attributes[:image_url] = url_for(product.image) if product.image.attached?
             product_attributes

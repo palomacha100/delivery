@@ -25,7 +25,7 @@
           <%= label_tag :store_id, "Buscar Loja" %>
           <%= text_field_tag :store_name, nil, class: 'form-control', placeholder: "Digite o nome da loja", id: 'store_search' %>
           <%= hidden_field_tag "order[store_id]", nil, id: 'order_store_id' %>
-          <div id="store_results"></div>
+          <div id="store_results" class="results-list"></div>
         </div>
       </div>       
       <div id="product_selection" style="display: none;">
@@ -34,95 +34,97 @@
       </div>
 
       <div class="actions">
-        <%= f.submit "Criar Pedido", class: "btn btn-primary" %>
+        <%= f.submit "Criar Pedido", class: "medium-blue-button" %>
       </div>
     <% end %>
   </div>
 </main>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const buyerEmail = document.getElementById('buyer_email');
-    const orderBuyerId = document.getElementById('order_buyer_id');
-    const buyersResults = document.getElementById('buyers_results');
-    const storeSearch = document.getElementById('store_search');
-    const orderStoreId = document.getElementById('order_store_id');
-    const storeResults = document.getElementById('store_results');
-    const productSelection = document.getElementById('product_selection');
-    const productList = document.getElementById('product_list');
+document.addEventListener("DOMContentLoaded", () => {
+  const buyerEmail = document.getElementById('buyer_email');
+  const orderBuyerId = document.getElementById('order_buyer_id');
+  const buyersResults = document.getElementById('buyers_results');
+  const storeSearch = document.getElementById('store_search');
+  const orderStoreId = document.getElementById('order_store_id');
+  const storeResults = document.getElementById('store_results');
+  const productSelection = document.getElementById('product_selection');
+  const productList = document.getElementById('product_list');
 
-    buyerEmail.addEventListener('input', function() {
-      fetch(`/users?query=${this.value}`)
-        .then(response => response.json())
-        .then(data => {
-          buyersResults.innerHTML = data.map(buyer => `<div class="buyer-result" data-id="${buyer.id}" data-email="${buyer.email}">${buyer.email}</div>`).join('');
-          document.querySelectorAll('.buyer-result').forEach(item => {
-            item.addEventListener('click', function() {
-              const buyerId = this.getAttribute('data-id');
-              const buyerEmailValue = this.getAttribute('data-email');
-              buyerEmail.value = buyerEmailValue;
-              orderBuyerId.value = buyerId;
-              buyersResults.innerHTML = ''; // Clear the results after selection
-            });
+  buyerEmail.addEventListener('input', function() {
+    fetch(`/users?query=${this.value}`)
+      .then(response => response.json())
+      .then(data => {
+        buyersResults.innerHTML = data.map(buyer => `<div class="buyer-result" data-id="${buyer.id}" data-email="${buyer.email}">${buyer.email}</div>`).join('');
+        document.querySelectorAll('.buyer-result').forEach(item => {
+          item.addEventListener('click', function() {
+            const buyerId = this.getAttribute('data-id');
+            const buyerEmailValue = this.getAttribute('data-email');
+            buyerEmail.value = buyerEmailValue;
+            orderBuyerId.value = buyerId;
+            buyersResults.innerHTML = ''; // Clear the results after selection
           });
         });
-    });
+      });
+  });
 
-    storeSearch.addEventListener('input', function() {
-      fetch(`/stores?query=${this.value}`)
-        .then(response => response.json())
-        .then(data => {
-          storeResults.innerHTML = data.map(store => `<div class="store-result" data-id="${store.id}" data-name="${store.name}">${store.name}</div>`).join('');
-          document.querySelectorAll('.store-result').forEach(item => {
-            item.addEventListener('click', function() {
-              const storeId = this.getAttribute('data-id');
-              const storeNameValue = this.getAttribute('data-name');
-              storeSearch.value = storeNameValue;
-              orderStoreId.value = storeId;
-              storeResults.innerHTML = ''; // Clear the results after selection
-              fetch(`/stores/${storeId}/products`)
-                .then(response => response.json())
-                .then(products => {
-                  productList.innerHTML = products.data.map(product => `
-                    <div>
-                      <input type="checkbox" id="product_${product.id}" value="${product.id}" data-price="${product.price}" class="product-checkbox">
-                      <label for="product_${product.id}">${product.title} - ${parseFloat(product.price).toFixed(2)}</label>
-                      <input type="number" name="order[order_items_attributes][][amount]" min="1" placeholder="Quantidade" class="product-amount" style="display:none;">
-                      <input type="hidden" name="order[order_items_attributes][][product_id]" value="${parseFloat(product.price).toFixed(2)}" class="product-id" style="display:none;">
-                      <input type="hidden" name="order[order_items_attributes][][price]" value="${parseFloat(product.price).toFixed(2)}" class="product-price" style="display:none;">
-                    </div>
-                  `).join('');
-                  productSelection.style.display = 'block';
+  storeSearch.addEventListener('input', function() {
+    fetch(`/stores?query=${this.value}`)
+      .then(response => response.json())
+      .then(data => {
+        storeResults.innerHTML = data.map(store => `<div class="store-result" data-id="${store.id}" data-name="${store.name}">${store.name}</div>`).join('');
+        document.querySelectorAll('.store-result').forEach(item => {
+          item.addEventListener('click', function() {
+            const storeId = this.getAttribute('data-id');
+            const storeNameValue = this.getAttribute('data-name');
+            storeSearch.value = storeNameValue;
+            orderStoreId.value = storeId;
+            storeResults.innerHTML = ''; // Clear the results after selection
+            fetch(`/stores/${storeId}/products`)
+              .then(response => response.json())
+              .then(products => {
+                productList.innerHTML = products.data.map(product => `
+                  <div>
+                    <input type="checkbox" id="product_${product.id}" value="${product.id}" data-price="${product.price}" class="product-checkbox">
+                    <label for="product_${product.id}">${product.title} - ${parseFloat(product.price).toFixed(2)}</label>
+                    <input type="number" name="order[order_items_attributes][][amount]" min="1" placeholder="Quantidade" class="product-amount" style="display:none;">
+                    <input type="hidden" name="order[order_items_attributes][][product_id]" value="${product.id}" class="product-id" style="display:none;">
+                    <input type="hidden" name="order[order_items_attributes][][price]" value="${parseFloat(product.price).toFixed(2)}" class="product-price" style="display:none;">
+                  </div>
+                `).join('');
+                productSelection.style.display = 'block';
 
-                  document.querySelectorAll('.product-checkbox').forEach(checkbox => {
-                    checkbox.addEventListener('change', function() {
-                      const amountInput = this.nextElementSibling.nextElementSibling; // Get the amount input
-                      const productIdInput = amountInput.nextElementSibling;
-                      const productPriceInput = productIdInput.nextElementSibling;
-                      if (this.checked) {
-                        amountInput.style.display = 'block';
-                        amountInput.name = "order[order_items_attributes][][amount]";
-                        productIdInput.style.display = 'block';
-                        productIdInput.name = "order[order_items_attributes][][product_id]";
-                        productPriceInput.style.display = 'block';
-                        productPriceInput.name = "order[order_items_attributes][][price]";
-                      } else {
-                        amountInput.style.display = 'none';
-                        amountInput.removeAttribute('name');
-                        amountInput.value = '';
-                        productIdInput.style.display = 'none';
-                        productIdInput.removeAttribute('name');
-                        productPriceInput.style.display = 'none';
-                        productPriceInput.removeAttribute('name');
-                      }
-                    });
+                document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+                  checkbox.addEventListener('change', function() {
+                    const amountInput = this.nextElementSibling.nextElementSibling; // Get the amount input
+                    const productIdInput = amountInput.nextElementSibling;
+                    const productPriceInput = productIdInput.nextElementSibling;
+                    if (this.checked) {
+                      amountInput.style.display = 'block';
+                      amountInput.name = "order[order_items_attributes][][amount]";
+                      productIdInput.style.display = 'block';
+                      productIdInput.name = "order[order_items_attributes][][product_id]";
+                      productPriceInput.style.display = 'block';
+                      productPriceInput.name = "order[order_items_attributes][][price]";
+                    } else {
+                      amountInput.style.display = 'none';
+                      amountInput.removeAttribute('name');
+                      amountInput.value = '';
+                      productIdInput.style.display = 'none';
+                      productIdInput.removeAttribute('name');
+                      productPriceInput.style.display = 'none';
+                      productPriceInput.removeAttribute('name');
+                    }
                   });
                 });
-            });
+              });
           });
         });
-    });
+      });
   });
+});
+
+
 </script>
 
 
