@@ -25,6 +25,7 @@
           <%= label_tag :store_id, "Buscar Loja" %>
           <%= text_field_tag :store_name, nil, class: 'form-control', placeholder: "Digite o nome da loja", id: 'store_search' %>
           <%= hidden_field_tag "order[store_id]", nil, id: 'order_store_id' %>
+          <div id="store_results"></div>
         </div>
       </div>       
       <div id="product_selection" style="display: none;">
@@ -71,6 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`/stores?query=${this.value}`)
       .then(response => response.json())
       .then(data => {
+        if (data.length > 0) {
+          storeResults.style.display = 'block'; // Show the results container
+        } else {
+          storeResults.style.display = 'none'; // Hide the results container if no results
+        }
         storeResults.innerHTML = data.map(store => `<div class="store-result" data-id="${store.id}" data-name="${store.name}">${store.name}</div>`).join('');
         document.querySelectorAll('.store-result').forEach(item => {
           item.addEventListener('click', function() {
@@ -78,7 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const storeNameValue = this.getAttribute('data-name');
             storeSearch.value = storeNameValue;
             orderStoreId.value = storeId;
-            storeResults.innerHTML = ''; // Clear the results after selection
+            storeResults.innerHTML = ''; 
+            storeResults.style.display = 'none';
             fetch(`/stores/${storeId}/products`)
               .then(response => response.json())
               .then(products => {

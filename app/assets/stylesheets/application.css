@@ -312,18 +312,21 @@ a {
   height: auto;
 }
 
-.results-list {
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-  background: white;
+#store_results {
+  display: none;
+  max-height: 200px; 
+  overflow-y: auto; 
+  border: 1px solid #ccc; 
+  background-color: #fff; 
+  padding: 5px; 
 }
-.results-list div {
+
+.store-result {
   padding: 5px;
   cursor: pointer;
 }
-.results-list div:hover {
-  background: #f0f0f0;
+
+.store-result:hover {
+  background-color: #f0f0f0; 
 }
  
