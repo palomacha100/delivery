@@ -312,7 +312,7 @@ a {
   height: auto;
 }
 
-#store_results {
+#store_results, #buyers_results {
   display: none;
   max-height: 200px; 
   overflow-y: auto; 
@@ -321,12 +321,12 @@ a {
   padding: 5px; 
 }
 
-.store-result {
+.store-result, .buyer-result {
   padding: 5px;
   cursor: pointer;
 }
 
-.store-result:hover {
+.store-result:hover, .buyer-result:hover {
   background-color: #f0f0f0; 
 }
  

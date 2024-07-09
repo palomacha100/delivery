@@ -55,6 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`/users?query=${this.value}`)
       .then(response => response.json())
       .then(data => {
+        if (data.length > 0) {
+          buyersResults.style.display = 'block'; 
+        } else {
+          buyersResults.style.display = 'none'; 
+        }
         buyersResults.innerHTML = data.map(buyer => `<div class="buyer-result" data-id="${buyer.id}" data-email="${buyer.email}">${buyer.email}</div>`).join('');
         document.querySelectorAll('.buyer-result').forEach(item => {
           item.addEventListener('click', function() {
@@ -62,7 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const buyerEmailValue = this.getAttribute('data-email');
             buyerEmail.value = buyerEmailValue;
             orderBuyerId.value = buyerId;
-            buyersResults.innerHTML = ''; // Clear the results after selection
+            buyersResults.innerHTML = ''; 
+            buyersResults.style.display = 'none';
           });
         });
       });
@@ -73,9 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
-          storeResults.style.display = 'block'; // Show the results container
+          storeResults.style.display = 'block'; 
         } else {
-          storeResults.style.display = 'none'; // Hide the results container if no results
+          storeResults.style.display = 'none'; 
         }
         storeResults.innerHTML = data.map(store => `<div class="store-result" data-id="${store.id}" data-name="${store.name}">${store.name}</div>`).join('');
         document.querySelectorAll('.store-result').forEach(item => {
