@@ -329,4 +329,12 @@ a {
 .store-result:hover, .buyer-result:hover {
   background-color: #f0f0f0; 
 }
+
+.product-amount {
+  font-family: 'Poppins';
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
  
