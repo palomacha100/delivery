@@ -14,7 +14,7 @@
     <p style="color: green"><%= notice %></p>
     <h1 class="title-styled">Gerenciamento de lojas</h1>
     <div class="inline-container">
-      <%= link_to "Nova loja", new_store_path, class: 'medium-green-button' %>
+      <%= link_to "Nova loja", new_store_path, class: 'medium-blue-button' %>
     </div>
     <hr/>
     <div class="products-container">
@@ -29,6 +29,7 @@
         <hr />
       <% end %>
     </div>
+    <%= paginate @stores %>
   </div>
 </main>
 

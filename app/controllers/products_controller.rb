@@ -43,7 +43,7 @@ class ProductsController < ApplicationController
     if request.format == Mime[:json]
       if @user && @user.admin?
         page = params.fetch(:page, 1)
-        @products = Product.order(:title).page(page).per(10) # Paginação com 10 produtos por página
+        @products = Product.order(:title).page(page)
 
         Rails.logger.info "Total pages: #{@products.total_pages}" if @products.respond_to?(:total_pages)
 
@@ -70,7 +70,7 @@ class ProductsController < ApplicationController
         redirect_to root_path, notice: "No permission for you"
       else
         page = params.fetch(:page, 1)
-        @products = Product.includes(:store).order(:title).page(page).per(10) # Paginação com 10 produtos por página
+        @products = Product.includes(:store).order(:title).page(page)
 
         Rails.logger.info "Total pages: #{@products.total_pages}" if @products.respond_to?(:total_pages)
       end

@@ -2,21 +2,49 @@ class StoresController < ApplicationController
   include ActionController::Live
   skip_forgery_protection only: %i[create update destroy]
   before_action :authenticate!
-  before_action :set_store, only: %i[ show edit update destroy ]
+  before_action :set_store, only: %i[show edit update destroy]
   rescue_from User::InvalidToken, with: :not_authorized
 
   # GET /stores or /stores.json
   def index
-    if params[:query].present?
-      @stores = Store.where("name LIKE ?", "%#{params[:query]}%")
-      render json: @stores
-    else
-      if current_user.admin?
-        @stores = Store.all
-      elsif current_user.buyer?
-        @stores = Store.kept.where(active: true).includes(image_attachment: :blob)
-      else 
-        @stores = Store.kept.where(user: current_user).includes(image_attachment: :blob)
+    respond_to do |format|
+      format.json do
+        page = params.fetch(:page, 1)
+        
+        if params[:query].present?
+          @stores = Store.where("name LIKE ?", "%#{params[:query]}%").page(page)
+        else
+          if current_user.admin?
+            @stores = Store.order(:name).page(page)
+          elsif current_user.buyer?
+            @stores = Store.kept.where(active: true).includes(image_attachment: :blob).page(page)
+          else
+            @stores = Store.kept.where(user: current_user).includes(image_attachment: :blob).page(page)
+          end
+        end
+  
+        stores_data = @stores.map do |store|
+          store_attributes = store.attributes
+          store_attributes[:image_url] = url_for(store.image) if store.image.attached?
+          store_attributes
+        end
+  
+        render json: {
+          data: stores_data,
+          meta: {
+            current_page: @stores.current_page,
+            total_pages: @stores.total_pages,
+            total_count: @stores.total_count
+          }
+        }, status: :ok
+      end
+      format.html do
+        if !current_user.admin?
+          redirect_to root_path, notice: "No permission for you"
+        else
+          page = params.fetch(:page, 1)
+          @stores = Store.order(:name).page(page).per(10) # Paginação com 10 produtos por página
+        end
       end
     end
   end
@@ -112,70 +140,67 @@ class StoresController < ApplicationController
     sse = SSE.new(response.stream, retry: 300, event: "waiting-orders")
     last_orders = nil
     begin
-      sse.write({ hello: "world!"}, event: "waiting-order")
+      sse.write({ hello: "world!" }, event: "waiting-order")
       EventMachine.run do
         EventMachine::PeriodicTimer.new(3) do
-         orders = Order.where.not(state: [:canceled, :delivered, :payment_failed, :created, :payment_pending])
-        if orders != last_orders 
-          if orders.any?
-            formatted_orders = orders.map do |order|
-              buyer = order.buyer
+          orders = Order.where.not(state: [:canceled, :delivered, :payment_failed, :created, :payment_pending])
+          if orders != last_orders 
+            if orders.any?
+              formatted_orders = orders.map do |order|
+                buyer = order.buyer
 
-              Rails.logger.info "Order: #{order.inspect}, Buyer: #{buyer.inspect}, Order Items: #{order.order_items.inspect}, Products: #{order.order_items.map(&:product).inspect}"
-              {
-                id: order.id,
-                customerName: order.buyer.name,
-                status: order.state,
-                items: order.order_items.map { |item| { id: item.id, name: item.product.title, price: item.price } },
-                total: format_price(order.order_items.sum { |item| item.price * item.amount }),
-                address: "#{order.buyer.address}, #{order.buyer.numberaddress}",
-                neighborhood: order.buyer.neighborhood,
-                city: order.buyer.city,
-                cep: order.buyer.cep,
-                expanded: false
-              }
+                Rails.logger.info "Order: #{order.inspect}, Buyer: #{buyer.inspect}, Order Items: #{order.order_items.inspect}, Products: #{order.order_items.map(&:product).inspect}"
+                {
+                  id: order.id,
+                  customerName: order.buyer.name,
+                  status: order.state,
+                  items: order.order_items.map { |item| { id: item.id, name: item.product.title, price: item.price } },
+                  total: format_price(order.order_items.sum { |item| item.price * item.amount }),
+                  address: "#{order.buyer.address}, #{order.buyer.numberaddress}",
+                  neighborhood: order.buyer.neighborhood,
+                  city: order.buyer.city,
+                  cep: order.buyer.cep,
+                  expanded: false
+                }
+              end
+              message = { time: Time.now, orders: formatted_orders }
+              sse.write(message, event: "new orders")
+            else
+              sse.write({ message: "no orders" }, event: "no")
             end
-            message = { time: Time.now, orders: formatted_orders }
-            sse.write(message, event: "new orders")
-          else
-            sse.write({ message: "no orders" }, event: "no")
+            last_orders = orders 
           end
-          last_orders = orders 
-        end
         end
       end
-   rescue IOError, ActionController::Live::ClientDisconnected
-     sse.close
-   ensure
-     sse.close
-   end
+    rescue IOError, ActionController::Live::ClientDisconnected
+      sse.close
+    ensure
+      sse.close
+    end
   end
 
-
   private
-   
-    def set_store
-      @store = Store.find(params[:id])
-    end
 
-    def store_params
-      required = params.require(:store)
+  def set_store
+    @store = Store.find(params[:id])
+  end
 
-      if current_user.admin?
-        required.permit(:name, :user_id, :image, :cnpj, 
-        :phonenumber, :city, :cep, :state, :neighborhood, 
-        :address, :numberaddress, :establishment, :complementadress, :active, :theme)
-      else
-        required.permit(:name, :image, :cnpj, :phonenumber, 
-        :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment, :complementadress, :active, :theme)
-      end
-    end
+  def store_params
+    required = params.require(:store)
 
-    def not_authorized(e)
-      render json: {message: "Nope!"}, status: 401
+    if current_user.admin?
+      required.permit(:name, :user_id, :image, :cnpj, :phonenumber, :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment, :complementadress, :active, :theme)
+    else
+      required.permit(:name, :image, :cnpj, :phonenumber, :city, :cep, :state, :neighborhood, :address, :numberaddress, :establishment, :complementadress, :active, :theme)
     end
+  end
 
-    def format_price(price)
-      ActionController::Base.helpers.number_to_currency(price)
-    end
+  def not_authorized(e)
+    render json: { message: "Nope!" }, status: 401
+  end
+
+  def format_price(price)
+    ActionController::Base.helpers.number_to_currency(price)
+  end
 end
+
