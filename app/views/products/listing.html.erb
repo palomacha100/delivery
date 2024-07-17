@@ -12,18 +12,17 @@
 <main>
   <div class="global-container">
     <h1 class="title-styled">Gerenciamento de produtos</h1>
-  
-  <div>
-    <% @products.each do |product| %>
-      <div class="big-column-start-container">
-        <h2><%= product.title %></h2>
-        <%= link_to "Ver produto", store_product_path(store_id: product.store, id: product), class: 'small-green-button' %>
-       
-        <p class="text-styled">Loja: <%= product.store.name %></p> 
-        <%= link_to "Ver loja", store_path(id: product.store), class: 'small-transparent-button'%>
-      </div>
-      <hr/>
-    <% end %>
-  </div>
+    <div>
+      <% @products.each do |product| %>
+        <div class="big-column-start-container">
+          <h2><%= product.title %></h2>
+          <%= link_to "Ver produto", store_product_path(store_id: product.store, id: product), class: 'small-green-button' %>
+          <p class="text-styled">Loja: <%= product.store.name %></p> 
+          <%= link_to "Ver loja", store_path(id: product.store), class: 'small-transparent-button'%>
+        </div>
+        <hr/>
+      <% end %>
+    </div>
+    <%= paginate @products %>
   </div>
 </main>

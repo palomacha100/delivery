@@ -39,22 +39,42 @@ class ProductsController < ApplicationController
     end
   end
 
-
   def listing
     if request.format == Mime[:json]
       if @user && @user.admin?
-        @products = Product.all
-        render json: { message: "Success", data: @products}
+        page = params.fetch(:page, 1)
+        @products = Product.order(:title).page(page).per(10) # Paginação com 10 produtos por página
+
+        Rails.logger.info "Total pages: #{@products.total_pages}" if @products.respond_to?(:total_pages)
+
+        products_data = @products.map do |product|
+          product_attributes = product.attributes
+          product_attributes[:image_url] = url_for(product.image) if product.image.attached?
+          product_attributes
+        end
+
+        render json: {
+          message: "Success",
+          data: products_data,
+          meta: {
+            current_page: @products.current_page,
+            total_pages: @products.total_pages,
+            total_count: @products.total_count
+          }
+        }, status: :ok
       else
         render json: { error: "Unauthorized" }, status: :unauthorized
       end
     else
       if !current_user.admin?
-        redirect_to root_path, notice: "No permision for you"
+        redirect_to root_path, notice: "No permission for you"
       else
-        @products = Product.includes(:store)
+        page = params.fetch(:page, 1)
+        @products = Product.includes(:store).order(:title).page(page).per(10) # Paginação com 10 produtos por página
+
+        Rails.logger.info "Total pages: #{@products.total_pages}" if @products.respond_to?(:total_pages)
       end
-    end   
+    end
   end
 
   def edit
